@@ -1,0 +1,78 @@
+$mainColor: #00bbab;
+
+.ke-upload{
+  display: inline-block;
+  .bt-area{
+    width: 85px;
+    height: 35px;
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+    .ke-file{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      opacity: 0;
+    }
+    .ke-upload-content{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+      text-align: center;
+      border-radius: 4px;
+      color: #666;
+      border: 1px solid #dedede;
+      transition: all 0.3s cubic-bezier(.645,.045,.355,1);
+      cursor: pointer;
+      &:hover{
+        color: $mainColor;
+        border-color: $mainColor;
+      }
+      &::before{
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+      }
+      p{
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  .file-show-area{
+    display: inline-block;
+    vertical-align: top;
+    .file-item{
+      min-width: 170px;
+      height: 25px;
+      font-size: 12px;
+      padding: 0 8px;
+      line-height: 25px;
+      &:hover{
+        background: rgba(222,222,222,0.6);
+        .delete-file-item{
+          opacity: 1;
+        }
+      }
+      .file-item-name{
+
+      }
+      .delete-file-item{
+        float: right;
+        cursor: pointer;
+        opacity: 0;
+        &:hover{
+          color: $mainColor;
+        }
+      }
+    }
+  }
+}
