@@ -1,0 +1,94 @@
+$k-pagination-theme-color: #108ee9;
+$k-pagination-active-hover-color: #49a9ee;
+
+.k-pagination{
+  color: rgba(0,0,0,.65);
+  font-size: 12px;
+  .k-pagination-item-common{
+    cursor: pointer;
+    border-radius: 4px;
+    user-select: none;
+    min-width: 28px;
+    text-align: center;
+    list-style: none;
+    outline: 0;
+    display: inline-block;
+    vertical-align: middle;
+    height: 28px;
+    line-height: 26px;
+    margin-right: 8px;
+    box-sizing: border-box;
+    font-family: Arial;
+  }
+  .k-pagination-item, .k-pagination-prev, .k-pagination-next{
+    @extend .k-pagination-item-common;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    &:hover{
+      transition: all .3s;
+      border-color: $k-pagination-theme-color;
+      .k-pagination-item-link{
+        color: $k-pagination-theme-color;
+      }
+    }
+    .k-pagination-item-link{
+      margin: 0 6px;
+    }
+    .iconfont{
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+  .k-pagination-prev, .k-pagination-next{
+    line-height: 28px;
+  }
+  .k-pagination-disable{
+    opacity: 0.65;
+    &:hover{
+      border-color: #d9d9d9;
+      cursor: not-allowed;
+      .k-pagination-item-link{
+        color: #000;
+      }
+    }
+  }
+  .k-pagination-item-omit{
+    @extend .k-pagination-item-common;
+  }
+  .k-pagination-item-active{
+    background-color: $k-pagination-theme-color;
+    border-color: $k-pagination-theme-color;
+    color: #fff;
+    &:hover{
+      background-color: $k-pagination-active-hover-color;
+      border-color: $k-pagination-active-hover-color;
+      .k-pagination-item-link{
+        color: #fff;
+      }
+    }
+  }
+  .k-pagination-info{
+    display: inline-block;
+    list-style: none;
+    margin-right: 8px;
+    .k-pagination-info-total-num, .k-pagination-info-total-page{
+      margin: 0 6px;
+    }
+  }
+  .k-pagination-jumper{
+    display: inline-block;
+    list-style: none;
+    .k-pagination-jumper-input{
+      width: 25px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      margin-right: 8px;
+      padding: 0 5px;
+      height: 25px;
+      font-size: 12px;
+    }
+    .k-pagination-jumper-bt{
+      cursor: pointer;
+    }
+  }
+}
