@@ -1,0 +1,48 @@
+.k-message{
+	font-size: 12px;
+	position: fixed;
+	z-index: 1001;
+	width: 100%;
+	top: 16px;
+	left: 0;
+	pointer-events: none;
+	.k-message-notice{
+		padding: 8px;
+		text-align: center;
+		.k-message-notice-content{
+			padding: 8px 16px;
+			border-radius: 4px;
+			box-shadow: 0 2px 8px rgba(0,0,0,.2);
+			background: #fff;
+			display: inline-block;
+			.k-message-custom-content{
+				.k-message-icon{
+					margin-right: 8px;
+					font-size: 14px;
+					top: 1px;
+					position: relative;
+				}
+			}
+			.k-message-success{
+				.k-message-icon{
+					color: #00a854;
+				}
+			}
+			.k-message-error{
+				.k-message-icon{
+					color: #f04134;
+				}
+			}
+			.k-message-warning{
+				.k-message-icon{
+					color: #ffbf00;
+				}
+			}
+			.k-message-info{
+				.k-message-icon{
+					color: #108ee9;
+				}
+			}
+		}
+	}
+}

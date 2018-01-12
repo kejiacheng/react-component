@@ -1,0 +1,11 @@
+@import "./styles/variables.scss";
+@import "./styles/mixin.scss";
+
+body {
+	background: $backgroundColor;
+}
+
+.one-line-wrap {
+	display: block;
+	@extend .ellipsis;
+}
