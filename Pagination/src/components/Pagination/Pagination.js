@@ -11,6 +11,7 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import './Pagination.scss'
+import '../../styles/font/iconfont.scss'
 
 export default class pagination extends Component {
   static propTypes = {
@@ -190,7 +191,7 @@ export default class pagination extends Component {
         showInfo: props.showInfo,
         total: props.total || 0,
         offset: props.offset || 4,
-        onChange: props.onChange || function (page) {},
+        onChange: props.onChange || function () {},
         totalPage: Math.ceil(props.total / props.pageSize) || 0
       }
     )

@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Pagination from './components/Pagination/Pagination'
 import Log from './service/log'
-import './styles/font/iconfont.scss'
 
 
 Log.blue('test')

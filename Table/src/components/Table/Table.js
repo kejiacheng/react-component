@@ -20,11 +20,14 @@
  * onRowMouseLeave 行mouseLeave函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
  * onLeftOneClick 行左鼠标单次点击函数 参数：data（当前行数据），index（当前行index），e（当前行e）
  * canDrag{switch: bool, callback: func} switch控制是否允许拖拽 callback拖拽完成后回调函数 参数：当前数据排序
+ * color{theadColor: string, hoverColor: string, clickColor: string}
  */
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import Pagination from '@xm/Pagination'
+import FilterDropdown from './FilterDropdown'
 import './Table.scss'
+import '../../styles/font/iconfont.scss'
 
 /*
 * canMove 能否移动
@@ -73,6 +76,7 @@ export default class Table extends Component {
     loading: React.PropTypes.bool,
     scroll: React.PropTypes.object,
     canDrag: React.PropTypes.object,
+    color: React.PropTypes.object,
     onRowMouseEnter: React.PropTypes.func,
     onRowMouseLeave: React.PropTypes.func,
     onLeftOneClick: React.PropTypes.func
@@ -96,6 +100,7 @@ export default class Table extends Component {
       loading: loading,
       scroll: props.scroll || null,
       canDrag: props.canDrag || null,
+      color: props.color || {},
       onRowMouseEnter: props.onRowMouseEnter || function () {},
       onRowMouseLeave: props.onRowMouseLeave || function () {},
       onLeftOneClick: props.onLeftOneClick || function () {},
@@ -123,7 +128,16 @@ export default class Table extends Component {
     let thArr = []
 
     me.state.columns.forEach((it) => {
-      thArr.push(<th key={it.key}><span>{it.title}</span></th>)
+      thArr.push(
+        <th key={it.key}>
+          <span>{it.title}</span>
+          {
+            it.filterDropdown
+              ? <FilterDropdown data={it} />
+              : null
+          }
+        </th>
+      )
     })
 
     return thArr
@@ -154,7 +168,7 @@ export default class Table extends Component {
 
       trArr.push(
         <tr
-          className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
+          // className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
           key={n + index}
           onMouseEnter={this.trMouseEnter.bind(null, it, index)}
           onMouseLeave={this.trMouseLeave.bind(null, it, index)}
@@ -176,6 +190,15 @@ export default class Table extends Component {
       return
     }
 
+    e.currentTarget.style.background = me.state.color.hoverColor || '#ecf6fd'
+    me.siblings(e.currentTarget).forEach(it => {
+      if (me.hasClass(it, 'k-table-tr-active')) {
+        it.style.background = me.state.color.clickColor || '#dbf0ff'
+      } else {
+        it.style.background = '#fff'
+      }
+    })
+
     me.state.onRowMouseEnter(data, index, e)
   }
 
@@ -184,6 +207,12 @@ export default class Table extends Component {
 
     if (me.state.isDraging) {
       return
+    }
+
+    if (me.hasClass(e.currentTarget, 'k-table-tr-active')) {
+      e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff'
+    } else {
+      e.currentTarget.style.background = '#fff'
     }
 
     me.state.onRowMouseLeave(data, index, e)
@@ -305,11 +334,17 @@ export default class Table extends Component {
       return
     }
 
-    me.setState(
-      {
-        activeIndex: index
-      }
-    )
+    // me.setState(
+    //   {
+    //     activeIndex: index
+    //   }
+    // )
+    me.addClass(e.currentTarget, 'k-table-tr-active')
+    e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff'
+    me.siblings(e.currentTarget).forEach(it => {
+      me.removeClass(it, 'k-table-tr-active')
+      it.style.background = '#fff'
+    })
     me.state.onLeftOneClick(data, index, e)
   }
 
@@ -377,9 +412,47 @@ export default class Table extends Component {
     me.state.pagination.onChange(page)
   }
 
-  componentWillReceiveProps (props) {
+  siblings = (obj) => {
+    let _nodes = []
+    let elem = obj
+    let _elem = obj
+    while ((_elem = _elem.previousSibling)){
+        if(_elem.nodeType === 1){
+            _nodes.push(_elem);
+        }
+    }
+    while ((elem = elem.nextSibling)){
+        if(elem.nodeType === 1){
+            _nodes.push(elem);
+
+        }
+    }
+
+    return _nodes;
+  }
+
+  hasClass = (obj, cls) => {
+    return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+  }
+
+  addClass = (obj, cls) => {
+    const me = this
+  
+    if (!me.hasClass(obj,cls)) obj.className += " " + cls;  
+  }
+
+  removeClass = (obj, cls) => {
     const me = this
 
+    if (me.hasClass(obj, cls)) {  
+	    var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+	    obj.className = obj.className.replace(reg, ' ');  
+	}  
+  }
+
+  componentWillReceiveProps (props) {
+    const me = this
+    console.log(props)
     if (me.props.pagination && !Object.is(me.props.pagination.current, props.pagination.current)) {
       me.setState(
         {
@@ -404,6 +477,7 @@ export default class Table extends Component {
         loading: loading,
         scroll: props.scroll || null,
         canDrag: props.canDrag || null,
+        color: props.color || {},
         onRowMouseEnter: props.onRowMouseEnter || function () {},
         onRowMouseLeave: props.onRowMouseLeave || function () {},
         onLeftOneClick: props.onLeftOneClick || function () {}
@@ -472,7 +546,12 @@ export default class Table extends Component {
               </colgroup>
               {
                 me.state.thead 
-                  ? <thead className="k-table-thead">
+                  ? <thead 
+                      className="k-table-thead"
+                      style={{
+                        background: me.state.color && me.state.color.theadColor
+                      }}
+                    >
                       <tr>
                         {
                           me.renderThead()
@@ -492,7 +571,7 @@ export default class Table extends Component {
             {
               (me.state.loading && !me.state.dataSource.length) && me.state.show300
                 ? <div className="k-table-loading">
-                    <a className="iconfont k-table-loading-icon">&#xe622;</a>
+                    <a className="k-table-iconfont k-table-loading-icon">&#xe622;</a>
                   </div>
                 : null
             }

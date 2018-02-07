@@ -2,6 +2,9 @@
 	margin: 0;
 	padding: 0;
 }
+.k-table-none{
+	display: none;
+}
 .k-table{
 	&:after{
 	  clear: both;
@@ -53,15 +56,15 @@
 				tr{
 					background: #fff;
 					transition: background .3s ease;
-					&:hover{
-					background: #ecf6fd;
-					}
+					// &:hover{
+					// 	background: #ecf6fd;
+					// }
 					td{
 					word-break: break-all;
 					}
 				}
 				.k-table-tr-active{
-					background: #dbf0ff;
+					// background: #dbf0ff;
 				}
 				}
 				th, td{
@@ -70,6 +73,25 @@
 				}
 				tr, th, td{
 				box-sizing: border-box;
+				}
+				th{
+					.k-table-th-filter{
+						margin-left: 5px;
+						cursor: pointer;
+						position: relative;
+						.k-table-arrow-down{
+							font-size: 12px;
+							img{
+								width: 12px;
+							}
+						}
+						.k-table-th-filter-dropdown{
+							cursor: default;
+							position: absolute;
+							top: 20px;
+							left: 0;
+						}
+					}
 				}
 			}
 			.k-table-loading{

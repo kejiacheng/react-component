@@ -8,6 +8,7 @@ import React, { Component } from 'react'
 import Notification from './Notification'
 import classNames from 'classnames'
 import './Message.scss'
+import '../../styles/font/iconfont.scss'
 
 let messageInstance
 let key = 1
