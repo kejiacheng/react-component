@@ -1,0 +1,106 @@
+*{
+        padding: 0;
+        margin: 0;
+}
+.k-select{
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 12px;
+    height: 28px;
+    user-select: none;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    transition: all 0.3s ease;
+    &:hover{
+        border-color: #488FF9;
+    }
+    .k-select-show-selected-area{
+        height: 100%;
+        &:hover{
+            .k-select-clear{
+                opacity: 1;
+            }
+        }
+        .k-select-placeholder, .k-select-selected-value{
+            position: absolute;
+            top: 50%;
+            line-height: 20px;
+            margin-top: -10px;
+            margin-left: 8px;
+            color: #bfbfbf;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: left;
+            max-width: calc(100% - 40px)
+        }
+        .k-select-selected-value{
+            color: rgba(0, 0, 0, 0.65);
+        }
+        .k-select-clear{
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            right: 22px;
+            line-height: 12px;
+            margin-top: -5px;
+            color: #bfbfbf;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 1;
+        }
+        .k-select-arrow{
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            line-height: 12px;
+            margin-top: -6px;
+            color: #bfbfbf;
+            font-size: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.2s ease;
+            z-index: 1;
+        }
+        .k-select-search{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            .k-select-search-input{
+                border: none;
+                outline: 0;
+                width: calc(100% - 25px);
+                height: 100%;
+                margin-left: 8px;
+                box-sizing: border-box;
+                background: transparent;
+            }
+        }
+    }
+    .k-select-option-wrapper{
+        position: absolute;
+        top: 100%;
+        margin-top: 10px;
+        background: #fff;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        box-sizing: border-box;
+        z-index: 99;
+        overflow: auto;
+        width: 100%;
+        max-height: 250px;
+    }
+}
+.k-select-active{
+    border-color: #488FF9;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(29, 165, 122, 0.2);
+    .k-select-arrow{
+        transform: rotate(180deg);
+    }
+}
