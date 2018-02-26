@@ -97,7 +97,7 @@ export default class common extends Component {
         ]
 
         return (
-            <div style={{width: '800px', margin: '100px auto'}}>
+            <div style={{width: '800px', margin: '100px auto', height: '300px'}}>
             <Table 
                 className="just-test"
                 bordered

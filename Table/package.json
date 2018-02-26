@@ -1,6 +1,6 @@
 {
   "name": "@xm/Table",
-  "version": "0.1.4",
+  "version": "0.2.4",
   "description": "",
   "main": "dist/components/Table/Table.js",
   "scripts": {
@@ -51,14 +51,16 @@
     "webpack-dev-server": "^1.16.5"
   },
   "dependencies": {
-    "@xm/Pagination": "^0.0.3",
+    "@xm/Pagination": "^0.1.5",
     "classnames": "^2.2.5",
     "console-polyfill": "^0.3.0",
     "es3ify-webpack-plugin": "^0.0.1",
     "es5-shim": "^4.5.9",
     "export-from-ie8": "^1.0.5",
     "normalize.css": "^7.0.0",
-    "react": "^0.14.9",
-    "react-dom": "^0.14.9"
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   }
 }

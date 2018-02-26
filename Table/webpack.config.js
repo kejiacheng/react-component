@@ -69,13 +69,6 @@ const webpackConfig = {
 
   devtool: 'inline-source-map',
 
-  eslint: {
-    configFile: path.join(__dirname, './.eslintrc'), // 指定eslint的配置文件在哪里
-    failOnWarning: false, // eslint报warning了就终止webpack编译
-    failOnError: false, // eslint报error了就终止webpack编译
-    // cache: true, // 开启eslint的cache，cache存在node_modules/.cache目录里
-  },
-
   module: {
     postLoaders: [
       
@@ -85,7 +78,7 @@ const webpackConfig = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ['babel-loader?cacheDirectory=true', 'eslint-loader']
+        loaders: ['babel-loader?cacheDirectory=true']
       },
 
       {
@@ -95,7 +88,7 @@ const webpackConfig = {
 
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!sass-loader')
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules!sass-loader')
       },
 
       {

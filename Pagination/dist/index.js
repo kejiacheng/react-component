@@ -16,8 +16,6 @@ var _log = require('./service/log');
 
 var _log2 = _interopRequireDefault(_log);
 
-require('./styles/font/iconfont.scss');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _log2.default.blue('test');

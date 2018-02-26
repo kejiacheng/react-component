@@ -1,15 +1,15 @@
 // 存放iconfont代码，直接删除使用自己项目的iconfont
 @font-face {
-    font-family: 'iconfont';  /* project id 238001 */
-    src: url('//at.alicdn.com/t/font_238001_vusinrvwh15lv7vi.eot');
-    src: url('//at.alicdn.com/t/font_238001_vusinrvwh15lv7vi.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_238001_vusinrvwh15lv7vi.woff') format('woff'),
-    url('//at.alicdn.com/t/font_238001_vusinrvwh15lv7vi.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_238001_vusinrvwh15lv7vi.svg#iconfont') format('svg');
-  }
+  font-family: 'k-table-iconfont';  /* project id 238001 */
+  src: url('//at.alicdn.com/t/font_238001_wvw9l3fwsq2p4x6r.eot');
+  src: url('//at.alicdn.com/t/font_238001_wvw9l3fwsq2p4x6r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_238001_wvw9l3fwsq2p4x6r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_238001_wvw9l3fwsq2p4x6r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_238001_wvw9l3fwsq2p4x6r.svg#iconfont') format('svg');
+}
   
-  .iconfont{
-    font-family:"iconfont";
+  .k-table-iconfont{
+    font-family:"k-table-iconfont";
     font-size:16px;
     font-style:normal;
     color: #000;

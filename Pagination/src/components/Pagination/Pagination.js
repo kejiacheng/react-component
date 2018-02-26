@@ -10,8 +10,10 @@
 */
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import './Pagination.scss'
-import '../../styles/font/iconfont.scss'
+import PaginationCss from './Pagination.scss'
+import iconfontCss from '../../styles/font/iconfont.scss'
+
+let inputDom = null
 
 export default class pagination extends Component {
   static propTypes = {
@@ -55,19 +57,19 @@ export default class pagination extends Component {
     itemArray.push(
       <li className={
         classNames(
-          'k-pagination-item',
-          {'k-pagination-item-active': Object.is(me.state.current, 1)})}
+            PaginationCss['k-pagination-item'],
+          {[PaginationCss['k-pagination-item-active']]: Object.is(me.state.current, 1)})}
           onClick={this.page.bind(null, 1)}
           key="1"
       >
-        <a className={classNames('k-pagination-item-link')}>1</a>
+        <div className={classNames(PaginationCss['k-pagination-item-link'])}>1</div>
       </li>
     )
 
     if (me.state.current - me.state.offset > 1) {
       itemArray.push(
-        <li className={classNames('k-pagination-item-omit')} key="frontOmit">
-          <a className={classNames('k-pagination-item-link')}>...</a>
+        <li className={classNames(PaginationCss['k-pagination-item-omit'])} key="frontOmit">
+          <div className={classNames(PaginationCss['k-pagination-item-link'])}>...</div>
         </li>
       )
     }
@@ -76,20 +78,20 @@ export default class pagination extends Component {
       itemArray.push(
         <li className={
           classNames(
-            'k-pagination-item',
-            {'k-pagination-item-active': Object.is(me.state.current, i)})}
+              PaginationCss['k-pagination-item'],
+            {[PaginationCss['k-pagination-item-active']]: Object.is(me.state.current, i)})}
             onClick={this.page.bind(null, i)}
             key={i}
         >
-          <a className={classNames('k-pagination-item-link')}>{i}</a>
+          <div className={classNames(PaginationCss['k-pagination-item-link'])}>{i}</div>
         </li>
       )
     }
 
     if (me.state.current + me.state.offset < me.state.totalPage) {
       itemArray.push(
-        <li className={classNames('k-pagination-item-omit')} key="laterOmit">
-          <a className={classNames('k-pagination-item-link')}>...</a>
+        <li className={classNames(PaginationCss['k-pagination-item-omit'])} key="laterOmit">
+          <div className={classNames(PaginationCss['k-pagination-item-link'])}>...</div>
         </li>
       )
     }
@@ -98,12 +100,12 @@ export default class pagination extends Component {
       itemArray.push(
         <li className={
           classNames(
-            'k-pagination-item',
-            {'k-pagination-item-active': Object.is(me.state.current, me.state.totalPage)})}
+              PaginationCss['k-pagination-item'],
+            {[PaginationCss['k-pagination-item-active']]: Object.is(me.state.current, me.state.totalPage)})}
             onClick={this.page.bind(null, me.state.totalPage)}
             key={me.state.totalPage}
         >
-          <a className={classNames('k-pagination-item-link')}>{me.state.totalPage}</a>
+          <div className={classNames(PaginationCss['k-pagination-item-link'])}>{me.state.totalPage}</div>
         </li>
       )
     }
@@ -114,14 +116,12 @@ export default class pagination extends Component {
   page = (page) => {
     const me = this
 
-    me.setState(
-      {
-        current: page
-      },
-      function () {
-        me.state.onChange(me.state.current)
-      }
-    )
+    if (Object.is(page, me.state.current)) {
+      return
+    }
+
+    me.state.current = page
+    me.state.onChange(me.state.current)
   }
 
   prev = () => {
@@ -132,14 +132,8 @@ export default class pagination extends Component {
       return
     }
 
-    me.setState(
-      {
-        current: --me.state.current
-      },
-      function () {
-        me.state.onChange(me.state.current)
-      }
-    )
+    me.state.current = --me.state.current
+    me.state.onChange(me.state.current)
   }
 
   next = () => {
@@ -149,14 +143,8 @@ export default class pagination extends Component {
       return
     }
 
-    me.setState(
-      {
-        current: ++me.state.current
-      },
-      function () {
-        me.state.onChange(me.state.current)
-      }
-    )
+    me.state.current = ++me.state.current
+    me.state.onChange(me.state.current)
   }
 
   jumpPage = (e) => {
@@ -166,17 +154,46 @@ export default class pagination extends Component {
     const val = inputDom.value
 
     if (reg.test(val) && +val >= 1 && +val <= me.state.totalPage) {
-      me.setState(
-        {
-          current: +val
-        },
-        function () {
-          me.state.onChange(me.state.current)
-            inputDom.value = ''
-        }
-      )
+      me.state.current = +val
+      me.state.onChange(me.state.current)
+      inputDom.value = ''
     } else {
         inputDom.value = ''
+    }
+  }
+
+  focus = (e) => {
+    const me = this
+    
+    !inputDom && (inputDom = e.currentTarget)
+
+    addEventListener('keydown', me.addEnterEvent)
+  }
+
+  blur = () => {
+    const me = this
+
+    removeEventListener('keydown', me.addEnterEvent)
+  }
+
+  //添加回车事件
+  addEnterEvent = (e) => {
+    const me = this
+    const reg = /^\d+$/
+   
+    if (e && Object.is(e.keyCode, 13)) {
+      if (Object.is(+inputDom.value, me.state.current)) {
+        inputDom.value = ''
+        return
+      }
+
+      if (reg.test(inputDom.value) && +inputDom.value >= 1 && +inputDom.value <= me.state.totalPage) {
+        me.state.current = +inputDom.value
+        me.state.onChange(me.state.current)
+        inputDom.value = ''
+      } else {
+          inputDom.value = ''
+      }
     }
   }
 
@@ -197,6 +214,10 @@ export default class pagination extends Component {
     )
   }
 
+  shouldComponentUpdate (props, state) {
+
+    return true
+  }
 
   componentDidMount () {
 
@@ -206,43 +227,48 @@ export default class pagination extends Component {
     const me = this
 
     return (
-      <ul className={classNames('k-pagination')}>
+      <ul className={classNames(PaginationCss['k-pagination'])}>
         <li className=
               {classNames(
-                'k-pagination-prev',
-                {'k-pagination-disable': Object.is(me.state.current, 1)})
+                  PaginationCss['k-pagination-prev'],
+                {[PaginationCss['k-pagination-disable']]: Object.is(me.state.current, 1)})
               }
             onClick={this.prev}
         >
-          <a className={classNames('iconfont', 'k-pagination-item-link')}>&#xe601;</a>
+          <div className={classNames(iconfontCss['k-pagination-iconfont'], PaginationCss['k-pagination-item-link'])}>&#xe601;</div>
         </li>
         {
           me.renderPageItem()
         }
         <li className=
               {classNames(
-                'k-pagination-next',
-                {'k-pagination-disable': Object.is(me.state.current, me.state.totalPage)})
+                  PaginationCss['k-pagination-next'],
+                {[PaginationCss['k-pagination-disable']]: Object.is(me.state.current, me.state.totalPage)})
               }
             onClick={this.next}
         >
-          <a className={classNames('iconfont', 'k-pagination-item-link')}>&#xe72b;</a>
+          <div className={classNames(iconfontCss['k-pagination-iconfont'], PaginationCss['k-pagination-item-link'])}>&#xe72b;</div>
         </li>
         {
           Object.is(me.state.showInfo, undefined) || me.state.showInfo
-            ? <li className={classNames('k-pagination-info')}>
+            ? <li className={classNames(PaginationCss['k-pagination-info'])}>
                 <p>
-                  共<span className={classNames('k-pagination-info-total-num')}>{me.state.total}</span>条，
-                  共<span className={classNames('k-pagination-info-total-page')}>{me.state.totalPage}</span>页
+                  共<span className={classNames(PaginationCss['k-pagination-info-total-num'])}>{me.state.total}</span>条，
+                  共<span className={classNames(PaginationCss['k-pagination-info-total-page'])}>{me.state.totalPage}</span>页
                 </p>
               </li>
             : null
         }
         {
           Object.is(me.state.showQuickJumper, undefined) || me.state.showQuickJumper
-              ? <li className={classNames('k-pagination-jumper')}>
-                  <input className={classNames('k-pagination-jumper-input')} type="text"/>
-                  <a className={classNames('k-pagination-jumper-bt')} onClick={this.jumpPage}>确定</a>
+              ? <li className={classNames(PaginationCss['k-pagination-jumper'])}>
+                  <input
+                      className={classNames(PaginationCss['k-pagination-jumper-input'])}
+                      type="text"
+                      onFocus={this.focus}
+                      onBlur={this.blur}
+                  />
+                  <span className={classNames(PaginationCss['k-pagination-jumper-bt'])} onClick={this.jumpPage}>确定</span>
                 </li>
             : null
         }

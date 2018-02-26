@@ -119,12 +119,14 @@ export default class pagination extends Component {
 
         let data = dataSource.slice((page - 1) * me.state.pageSize, (page - 1) * me.state.pageSize + 10)
         console.log(data)
-        me.setState(
+      
+              me.setState(
             {
                 page,
                 dataSource: data
             }
         )
+     
     }
 
     render () {
@@ -182,6 +184,7 @@ export default class pagination extends Component {
                 dataSource={this.state.dataSource}
                 header={<div>213</div>}
                 footer={<div style={{'textAlign': 'center'}}>456</div>}
+                loading={true}
                 pagination={
                     {
                         current: this.state.page,

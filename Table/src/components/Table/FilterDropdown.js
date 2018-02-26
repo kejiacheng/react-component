@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import './filterDropdown.scss'
+import tableCss from './Table.scss'
+import iconfontCss from '../../styles/font/iconfont.scss'
+import filterDropdownCss from './filterDropdown.scss'
 
 export default class filterDropdown extends Component {
     constructor (props) {
@@ -51,18 +53,18 @@ export default class filterDropdown extends Component {
         const { data } = this.props
         
         return (
-            <span className="k-table-th-filter">
+            <span className={tableCss["k-table-th-filter"]}>
                 <span onClick={this.showFilterDropdown}>
                     {
                         data.filterIcon
-                            ? <i className="k-table-arrow-down">{data.filterIcon}</i>
-                            : <i className="k-table-iconfont k-table-arrow-down">&#xe604;</i>
+                            ? <i className={tableCss["k-table-arrow-down"]}>{data.filterIcon}</i>
+                            : <i className={classNames(iconfontCss['k-table-iconfont'], tableCss['k-table-arrow-down'])}>&#xe604;</i>
                     }
                 </span>
                 <div 
                     className={classNames(
-                        'k-table-th-filter-dropdown',
-                        {'k-table-none': !this.state.visible}
+                        tableCss['k-table-th-filter-dropdown'],
+                        {[tableCss['k-table-none']]: !this.state.visible}
                     )}
                     onClick={this.returnBubbling}
                 >

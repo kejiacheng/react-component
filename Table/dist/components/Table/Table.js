@@ -8,13 +8,13 @@ var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
 var _is = require('babel-runtime/core-js/object/is');
 
 var _is2 = _interopRequireDefault(_is);
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
@@ -48,7 +48,17 @@ var _Pagination = require('@xm/Pagination');
 
 var _Pagination2 = _interopRequireDefault(_Pagination);
 
-require('./Table.scss');
+var _FilterDropdown = require('./FilterDropdown');
+
+var _FilterDropdown2 = _interopRequireDefault(_FilterDropdown);
+
+var _Table = require('./Table.scss');
+
+var _Table2 = _interopRequireDefault(_Table);
+
+var _iconfont = require('../../styles/font/iconfont.scss');
+
+var _iconfont2 = _interopRequireDefault(_iconfont);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -83,6 +93,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * onRowMouseLeave 行mouseLeave函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
  * onLeftOneClick 行左鼠标单次点击函数 参数：data（当前行数据），index（当前行index），e（当前行e）
  * canDrag{switch: bool, callback: func} switch控制是否允许拖拽 callback拖拽完成后回调函数 参数：当前数据排序
+ * color{theadColor: string, hoverColor: string, clickColor: string}
  */
 var params = {
   canMove: false,
@@ -98,8 +109,6 @@ var params = {
 //目标tr的index
 var currentPosition = 0;
 var changedDataSource = void 0;
-
-var timer300 = void 0;
 
 var Table = function (_Component) {
   (0, _inherits3.default)(Table, _Component);
@@ -132,7 +141,8 @@ var Table = function (_Component) {
             'span',
             null,
             it.title
-          )
+          ),
+          it.filterDropdown ? _react2.default.createElement(_FilterDropdown2.default, { data: it }) : null
         ));
       });
 
@@ -143,7 +153,7 @@ var Table = function (_Component) {
       var me = _this;
       var trArr = [];
       var n = Math.random().toString(36).substr(2);
-
+      console.log(me.state.dataSource);
       me.state.dataSource.forEach(function (it, index) {
         var tdArr = [];
 
@@ -173,7 +183,7 @@ var Table = function (_Component) {
         trArr.push(_react2.default.createElement(
           'tr',
           {
-            className: (0, _classnames2.default)({ 'k-table-tr-active': (0, _is2.default)(me.state.activeIndex, index) }),
+            // className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
             key: n + index,
             onMouseEnter: _this.trMouseEnter.bind(null, it, index),
             onMouseLeave: _this.trMouseLeave.bind(null, it, index),
@@ -194,6 +204,15 @@ var Table = function (_Component) {
         return;
       }
 
+      e.currentTarget.style.background = me.state.color.hoverColor || '#ecf6fd';
+      me.siblings(e.currentTarget).forEach(function (it) {
+        if (me.hasClass(it, 'k-table-tr-active')) {
+          it.style.background = me.state.color.clickColor || '#dbf0ff';
+        } else {
+          it.style.background = '#fff';
+        }
+      });
+
       me.state.onRowMouseEnter(data, index, e);
     };
 
@@ -202,6 +221,12 @@ var Table = function (_Component) {
 
       if (me.state.isDraging) {
         return;
+      }
+
+      if (me.hasClass(e.currentTarget, 'k-table-tr-active')) {
+        e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff';
+      } else {
+        e.currentTarget.style.background = '#fff';
       }
 
       me.state.onRowMouseLeave(data, index, e);
@@ -323,8 +348,11 @@ var Table = function (_Component) {
         return;
       }
 
-      me.setState({
-        activeIndex: index
+      me.addClass(e.currentTarget, 'k-table-tr-active');
+      e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff';
+      me.siblings(e.currentTarget).forEach(function (it) {
+        me.removeClass(it, 'k-table-tr-active');
+        it.style.background = '#fff';
       });
       me.state.onLeftOneClick(data, index, e);
     };
@@ -369,16 +397,46 @@ var Table = function (_Component) {
       var me = _this;
 
       me.setState({
-        show300: true
-      }, function () {
-        setTimeout(function () {
-          me.setState({
-            show300: false
-          });
-        }, 300);
+        contentChange: true
       });
-
       me.state.pagination.onChange(page);
+    };
+
+    _this.siblings = function (obj) {
+      var _nodes = [];
+      var elem = obj;
+      var _elem = obj;
+      while (_elem = _elem.previousSibling) {
+        if (_elem.nodeType === 1) {
+          _nodes.push(_elem);
+        }
+      }
+      while (elem = elem.nextSibling) {
+        if (elem.nodeType === 1) {
+          _nodes.push(elem);
+        }
+      }
+
+      return _nodes;
+    };
+
+    _this.hasClass = function (obj, cls) {
+      return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    };
+
+    _this.addClass = function (obj, cls) {
+      var me = _this;
+
+      if (!me.hasClass(obj, cls)) obj.className += " " + cls;
+    };
+
+    _this.removeClass = function (obj, cls) {
+      var me = _this;
+
+      if (me.hasClass(obj, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+        obj.className = obj.className.replace(reg, ' ');
+      }
     };
 
     var thead = (0, _is2.default)(props.thead, false) ? false : true;
@@ -396,12 +454,13 @@ var Table = function (_Component) {
       loading: loading,
       scroll: props.scroll || null,
       canDrag: props.canDrag || null,
+      color: props.color || {},
       onRowMouseEnter: props.onRowMouseEnter || function () {},
       onRowMouseLeave: props.onRowMouseLeave || function () {},
       onLeftOneClick: props.onLeftOneClick || function () {},
       activeIndex: null,
       isDraging: false,
-      show300: true
+      contentChange: true
     };
     return _this;
   }
@@ -410,7 +469,7 @@ var Table = function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       var me = this;
-
+      console.log(props);
       if (me.props.pagination && !(0, _is2.default)(me.props.pagination.current, props.pagination.current)) {
         me.setState({
           activeIndex: null
@@ -432,9 +491,11 @@ var Table = function (_Component) {
         loading: loading,
         scroll: props.scroll || null,
         canDrag: props.canDrag || null,
+        color: props.color || {},
         onRowMouseEnter: props.onRowMouseEnter || function () {},
         onRowMouseLeave: props.onRowMouseLeave || function () {},
-        onLeftOneClick: props.onLeftOneClick || function () {}
+        onLeftOneClick: props.onLeftOneClick || function () {},
+        contentChange: false
       });
     }
   }, {
@@ -442,17 +503,13 @@ var Table = function (_Component) {
     value: function componentDidMount() {
       var me = this;
 
-      timer300 = setTimeout(function () {
-        me.setState({
-          show300: false
-        });
-      }, 300);
+      me.setState({
+        contentChange: false
+      });
     }
   }, {
     key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      clearTimeout(timer300);
-    }
+    value: function componentWillUnmount() {}
   }, {
     key: 'render',
     value: function render() {
@@ -460,15 +517,15 @@ var Table = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { className: (0, _classnames2.default)('k-table', (0, _defineProperty3.default)({}, this.state.className, this.state.className), { 'k-table-drag-status': this.state.isDraging })
+        { className: (0, _classnames2.default)(_Table2.default['k-table'], (0, _defineProperty3.default)({}, this.state.className, this.state.className), (0, _defineProperty3.default)({}, _Table2.default['k-table-drag-status'], this.state.isDraging))
         },
         me.state.header || me.state.canDrag && me.state.canDrag.switch ? _react2.default.createElement(
           'div',
-          { className: (0, _classnames2.default)('k-table-header', { 'k-table-header-border': me.state.bordered }) },
+          { className: (0, _classnames2.default)(_Table2.default['k-table-header'], (0, _defineProperty3.default)({}, _Table2.default['k-table-header-border'], me.state.bordered)) },
           me.state.header,
           _react2.default.createElement(
             'span',
-            { className: 'k-table-drag-bt' },
+            { className: _Table2.default['k-table-drag-bt'] },
             me.state.canDrag && me.state.canDrag.switch ? me.state.isDraging ? _react2.default.createElement(
               'span',
               null,
@@ -491,10 +548,15 @@ var Table = function (_Component) {
         ) : null,
         _react2.default.createElement(
           'div',
-          { className: (0, _classnames2.default)('k-table-content', { 'k-table-bordered': me.state.bordered }) },
+          { className: (0, _classnames2.default)(_Table2.default['k-table-content'], (0, _defineProperty3.default)({}, _Table2.default['k-table-bordered'], me.state.bordered)) },
           _react2.default.createElement(
             'div',
-            { className: 'k-table-body' },
+            {
+              className: _Table2.default["k-table-body"],
+              style: {
+                overflow: '' + (me.state.scroll ? 'auto' : 'visible')
+              }
+            },
             _react2.default.createElement(
               'table',
               { style: {
@@ -508,7 +570,12 @@ var Table = function (_Component) {
               ),
               me.state.thead ? _react2.default.createElement(
                 'thead',
-                { className: 'k-table-thead' },
+                {
+                  className: _Table2.default["k-table-thead"],
+                  style: {
+                    background: me.state.color && me.state.color.theadColor
+                  }
+                },
                 _react2.default.createElement(
                   'tr',
                   null,
@@ -517,34 +584,25 @@ var Table = function (_Component) {
               ) : null,
               _react2.default.createElement(
                 'tbody',
-                { className: 'k-table-tbody' },
-                !me.state.show300 ? me.renderTbody() : null
+                { className: _Table2.default["k-table-tbody"] },
+                me.renderTbody()
               )
             ),
-            me.state.loading && !me.state.dataSource.length && me.state.show300 ? _react2.default.createElement(
-              'div',
-              { className: 'k-table-loading' },
-              _react2.default.createElement(
-                'a',
-                { className: 'iconfont k-table-loading-icon' },
-                '\uE622'
-              )
-            ) : null,
-            !me.state.show300 && !me.state.dataSource.length ? _react2.default.createElement(
+            !me.state.dataSource.length ? _react2.default.createElement(
               'p',
-              { className: 'k-table-no-content' },
+              { className: _Table2.default["k-table-no-content"] },
               '\u6682\u65E0\u5185\u5BB9'
             ) : null
           )
         ),
         me.state.footer ? _react2.default.createElement(
           'div',
-          { className: (0, _classnames2.default)('k-table-footer', { 'k-table-footer-border': me.state.bordered }) },
+          { className: (0, _classnames2.default)(_Table2.default['k-table-footer'], (0, _defineProperty3.default)({}, _Table2.default['k-table-footer-border'], me.state.bordered)) },
           me.state.footer
         ) : null,
         me.state.pagination && (!me.state.canDrag || !me.state.canDrag.switch) ? _react2.default.createElement(
           'div',
-          { className: 'k-table-pagination' },
+          { className: _Table2.default["k-table-pagination"] },
           _react2.default.createElement(_Pagination2.default, {
             current: me.state.pagination.current || 1,
             pageSize: me.state.pagination.pageSize || 10,
@@ -554,6 +612,19 @@ var Table = function (_Component) {
             offset: me.state.pagination.offset || 4,
             onChange: me.pageChange
           })
+        ) : null,
+        me.state.loading && me.state.contentChange ? _react2.default.createElement(
+          'div',
+          { className: _Table2.default["k-table-loading"] },
+          _react2.default.createElement(
+            'div',
+            { className: _Table2.default["k-table-loading-content"] },
+            _react2.default.createElement(
+              'a',
+              { className: _iconfont2.default["k-table-iconfont"] + ' ' + _Table2.default["k-table-loading-icon"] },
+              '\uE622'
+            )
+          )
         ) : null
       );
     }
@@ -573,6 +644,7 @@ Table.propTypes = {
   loading: _react2.default.PropTypes.bool,
   scroll: _react2.default.PropTypes.object,
   canDrag: _react2.default.PropTypes.object,
+  color: _react2.default.PropTypes.object,
   onRowMouseEnter: _react2.default.PropTypes.func,
   onRowMouseLeave: _react2.default.PropTypes.func,
   onLeftOneClick: _react2.default.PropTypes.func

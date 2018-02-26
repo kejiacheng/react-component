@@ -1,11 +1,10 @@
-*{
-	margin: 0;
-	padding: 0;
-}
 .k-table-none{
 	display: none;
 }
 .k-table{
+	position: relative;
+	font-size: 12px;
+	height: 100%;
 	&:after{
 	  clear: both;
 	  content: " ";
@@ -40,9 +39,9 @@
 	  border-width: 0 1px 1px 1px;
 	}
 	.k-table-content{
-	  font-size: 12px;
+		height: 100%;
 	  .k-table-body{
-			overflow: auto;
+			height: 100%;
 			table{
 				width: 100%;
 				text-align: left;
@@ -94,22 +93,6 @@
 					}
 				}
 			}
-			.k-table-loading{
-				text-align: center;
-				padding: 20px 0;
-				border: solid #e9e9e9;
-				border-width: 0 0 1px 0;
-				.k-table-loading-icon{
-				font-size: 30px;
-				color: #108ee9;
-				animation: rotation 0.6s steps(8, end) infinite;
-				display: inline-block;
-				}
-				@keyframes rotation{
-				from {transform: rotate(0deg);}
-				to {transform: rotate(360deg);}
-				}
-			}
 			.k-table-no-content{
 				height: 40px;
 				line-height: 40px;
@@ -136,7 +119,36 @@
 		float: right;
 		margin: 20px;
 	}
-  }
+	.k-table-loading{
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(255, 255, 255, 0.6);
+		z-index: 99;
+		.k-table-loading-content{
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			width: 33px;
+			height: 30px;
+			margin: auto;
+		}
+		.k-table-loading-icon{
+		font-size: 30px;
+		color: #108ee9;
+		animation: rotation 0.6s steps(8, end) infinite;
+		display: inline-block;
+		}
+		@keyframes rotation{
+		from {transform: rotate(0deg);}
+		to {transform: rotate(360deg);}
+		}
+	}
+}
   .k-table-drag-status{
 	user-select: none;
   }

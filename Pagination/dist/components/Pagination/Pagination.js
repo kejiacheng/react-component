@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 var _is = require('babel-runtime/core-js/object/is');
 
 var _is2 = _interopRequireDefault(_is);
@@ -36,9 +40,27 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-require('./Pagination.scss');
+var _Pagination = require('./Pagination.scss');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
+var _iconfont = require('../../styles/font/iconfont.scss');
+
+var _iconfont2 = _interopRequireDefault(_iconfont);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+* param
+* current 当前页 默认为1
+* pageSize 每页数据量 默认为10
+* showQuickJumper 是否显示快速跳转 默认显示
+* showInfo 是否显示页面组件信息 默认显示
+* total 数据总量 默认为0
+* offset 左右偏移量 默认为4
+* onChange 页面变化函数 参数(当前页)
+*/
+var inputDom = null;
 
 var pagination = function (_Component) {
   (0, _inherits3.default)(pagination, _Component);
@@ -59,13 +81,13 @@ var pagination = function (_Component) {
 
       itemArray.push(_react2.default.createElement(
         'li',
-        { className: (0, _classnames2.default)('k-pagination-item', { 'k-pagination-item-active': (0, _is2.default)(me.state.current, 1) }),
+        { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item'], (0, _defineProperty3.default)({}, _Pagination2.default['k-pagination-item-active'], (0, _is2.default)(me.state.current, 1))),
           onClick: _this.page.bind(null, 1),
           key: '1'
         },
         _react2.default.createElement(
-          'a',
-          { className: (0, _classnames2.default)('k-pagination-item-link') },
+          'div',
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-link']) },
           '1'
         )
       ));
@@ -73,10 +95,10 @@ var pagination = function (_Component) {
       if (me.state.current - me.state.offset > 1) {
         itemArray.push(_react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-item-omit'), key: 'frontOmit' },
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-omit']), key: 'frontOmit' },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-link']) },
             '...'
           )
         ));
@@ -85,13 +107,13 @@ var pagination = function (_Component) {
       for (var i = startPage; i <= endPage; i++) {
         itemArray.push(_react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-item', { 'k-pagination-item-active': (0, _is2.default)(me.state.current, i) }),
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item'], (0, _defineProperty3.default)({}, _Pagination2.default['k-pagination-item-active'], (0, _is2.default)(me.state.current, i))),
             onClick: _this.page.bind(null, i),
             key: i
           },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-link']) },
             i
           )
         ));
@@ -100,10 +122,10 @@ var pagination = function (_Component) {
       if (me.state.current + me.state.offset < me.state.totalPage) {
         itemArray.push(_react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-item-omit'), key: 'laterOmit' },
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-omit']), key: 'laterOmit' },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-link']) },
             '...'
           )
         ));
@@ -112,13 +134,13 @@ var pagination = function (_Component) {
       if (me.state.totalPage > 1) {
         itemArray.push(_react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-item', { 'k-pagination-item-active': (0, _is2.default)(me.state.current, me.state.totalPage) }),
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item'], (0, _defineProperty3.default)({}, _Pagination2.default['k-pagination-item-active'], (0, _is2.default)(me.state.current, me.state.totalPage))),
             onClick: _this.page.bind(null, me.state.totalPage),
             key: me.state.totalPage
           },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-item-link']) },
             me.state.totalPage
           )
         ));
@@ -130,11 +152,12 @@ var pagination = function (_Component) {
     _this.page = function (page) {
       var me = _this;
 
-      me.setState({
-        current: page
-      }, function () {
-        me.state.onChange(me.state.current);
-      });
+      if ((0, _is2.default)(page, me.state.current)) {
+        return;
+      }
+
+      me.state.current = page;
+      me.state.onChange(me.state.current);
     };
 
     _this.prev = function () {
@@ -144,11 +167,8 @@ var pagination = function (_Component) {
         return;
       }
 
-      me.setState({
-        current: --me.state.current
-      }, function () {
-        me.state.onChange(me.state.current);
-      });
+      me.state.current = --me.state.current;
+      me.state.onChange(me.state.current);
     };
 
     _this.next = function () {
@@ -158,11 +178,8 @@ var pagination = function (_Component) {
         return;
       }
 
-      me.setState({
-        current: ++me.state.current
-      }, function () {
-        me.state.onChange(me.state.current);
-      });
+      me.state.current = ++me.state.current;
+      me.state.onChange(me.state.current);
     };
 
     _this.jumpPage = function (e) {
@@ -172,14 +189,45 @@ var pagination = function (_Component) {
       var val = inputDom.value;
 
       if (reg.test(val) && +val >= 1 && +val <= me.state.totalPage) {
-        me.setState({
-          current: +val
-        }, function () {
-          me.state.onChange(me.state.current);
-          inputDom.value = '';
-        });
+        me.state.current = +val;
+        me.state.onChange(me.state.current);
+        inputDom.value = '';
       } else {
         inputDom.value = '';
+      }
+    };
+
+    _this.focus = function (e) {
+      var me = _this;
+
+      !inputDom && (inputDom = e.currentTarget);
+
+      addEventListener('keydown', me.addEnterEvent);
+    };
+
+    _this.blur = function () {
+      var me = _this;
+
+      removeEventListener('keydown', me.addEnterEvent);
+    };
+
+    _this.addEnterEvent = function (e) {
+      var me = _this;
+      var reg = /^\d+$/;
+
+      if (e && (0, _is2.default)(e.keyCode, 13)) {
+        if ((0, _is2.default)(+inputDom.value, me.state.current)) {
+          inputDom.value = '';
+          return;
+        }
+
+        if (reg.test(inputDom.value) && +inputDom.value >= 1 && +inputDom.value <= me.state.totalPage) {
+          me.state.current = +inputDom.value;
+          me.state.onChange(me.state.current);
+          inputDom.value = '';
+        } else {
+          inputDom.value = '';
+        }
       }
     };
 
@@ -196,6 +244,9 @@ var pagination = function (_Component) {
     return _this;
   }
 
+  //添加回车事件
+
+
   (0, _createClass3.default)(pagination, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
@@ -208,9 +259,15 @@ var pagination = function (_Component) {
         showInfo: props.showInfo,
         total: props.total || 0,
         offset: props.offset || 4,
-        onChange: props.onChange || function (page) {},
+        onChange: props.onChange || function () {},
         totalPage: Math.ceil(props.total / props.pageSize) || 0
       });
+    }
+  }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(props, state) {
+
+      return true;
     }
   }, {
     key: 'componentDidMount',
@@ -222,46 +279,46 @@ var pagination = function (_Component) {
 
       return _react2.default.createElement(
         'ul',
-        { className: (0, _classnames2.default)('k-pagination') },
+        { className: (0, _classnames2.default)(_Pagination2.default['k-pagination']) },
         _react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-prev', { 'k-pagination-disable': (0, _is2.default)(me.state.current, 1) }),
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-prev'], (0, _defineProperty3.default)({}, _Pagination2.default['k-pagination-disable'], (0, _is2.default)(me.state.current, 1))),
             onClick: this.prev
           },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('iconfont', 'k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_iconfont2.default['k-pagination-iconfont'], _Pagination2.default['k-pagination-item-link']) },
             '\uE601'
           )
         ),
         me.renderPageItem(),
         _react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-next', { 'k-pagination-disable': (0, _is2.default)(me.state.current, me.state.totalPage) }),
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-next'], (0, _defineProperty3.default)({}, _Pagination2.default['k-pagination-disable'], (0, _is2.default)(me.state.current, me.state.totalPage))),
             onClick: this.next
           },
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('iconfont', 'k-pagination-item-link') },
+            'div',
+            { className: (0, _classnames2.default)(_iconfont2.default['k-pagination-iconfont'], _Pagination2.default['k-pagination-item-link']) },
             '\uE72B'
           )
         ),
         (0, _is2.default)(me.state.showInfo, undefined) || me.state.showInfo ? _react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-info') },
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-info']) },
           _react2.default.createElement(
             'p',
             null,
             '\u5171',
             _react2.default.createElement(
               'span',
-              { className: (0, _classnames2.default)('k-pagination-info-total-num') },
+              { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-info-total-num']) },
               me.state.total
             ),
             '\u6761\uFF0C \u5171',
             _react2.default.createElement(
               'span',
-              { className: (0, _classnames2.default)('k-pagination-info-total-page') },
+              { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-info-total-page']) },
               me.state.totalPage
             ),
             '\u9875'
@@ -269,11 +326,16 @@ var pagination = function (_Component) {
         ) : null,
         (0, _is2.default)(me.state.showQuickJumper, undefined) || me.state.showQuickJumper ? _react2.default.createElement(
           'li',
-          { className: (0, _classnames2.default)('k-pagination-jumper') },
-          _react2.default.createElement('input', { className: (0, _classnames2.default)('k-pagination-jumper-input'), type: 'text' }),
+          { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-jumper']) },
+          _react2.default.createElement('input', {
+            className: (0, _classnames2.default)(_Pagination2.default['k-pagination-jumper-input']),
+            type: 'text',
+            onFocus: this.focus,
+            onBlur: this.blur
+          }),
           _react2.default.createElement(
-            'a',
-            { className: (0, _classnames2.default)('k-pagination-jumper-bt'), onClick: this.jumpPage },
+            'span',
+            { className: (0, _classnames2.default)(_Pagination2.default['k-pagination-jumper-bt']), onClick: this.jumpPage },
             '\u786E\u5B9A'
           )
         ) : null
@@ -281,17 +343,7 @@ var pagination = function (_Component) {
     }
   }]);
   return pagination;
-}(_react.Component); /*
-                     * param
-                     * current 当前页 默认为1
-                     * pageSize 每页数据量 默认为10
-                     * showQuickJumper 是否显示快速跳转 默认显示
-                     * showInfo 是否显示页面组件信息 默认显示
-                     * total 数据总量 默认为0
-                     * offset 左右偏移量 默认为4
-                     * onChange 页面变化函数 参数(当前页)
-                     */
-
+}(_react.Component);
 
 pagination.propTypes = {
   current: _react2.default.PropTypes.number,

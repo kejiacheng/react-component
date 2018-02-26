@@ -26,8 +26,8 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Pagination from '@xm/Pagination'
 import FilterDropdown from './FilterDropdown'
-import './Table.scss'
-import '../../styles/font/iconfont.scss'
+import tableCss from './Table.scss'
+import iconfontCss from '../../styles/font/iconfont.scss'
 
 /*
 * canMove 能否移动
@@ -53,9 +53,6 @@ let topArr = []
 //目标tr的index
 let currentPosition = 0
 let changedDataSource
-
-
-let timer300
 
 export default class Table extends Component {
   static propTypes = {
@@ -106,7 +103,7 @@ export default class Table extends Component {
       onLeftOneClick: props.onLeftOneClick || function () {},
       activeIndex: null,
       isDraging: false,
-      show300: true
+      contentChange: true
     }
   }
 
@@ -147,7 +144,7 @@ export default class Table extends Component {
     const me = this
     let trArr = []
     const n = Math.random().toString(36).substr(2)
-
+   
     me.state.dataSource.forEach((it, index) => {
       let tdArr = []
 
@@ -165,7 +162,7 @@ export default class Table extends Component {
           <td style={{'width': obj.width || 'auto'}} key={obj.key}><span>{val}</span></td>
         )
       })
-
+   
       trArr.push(
         <tr
           // className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
@@ -334,11 +331,6 @@ export default class Table extends Component {
       return
     }
 
-    // me.setState(
-    //   {
-    //     activeIndex: index
-    //   }
-    // )
     me.addClass(e.currentTarget, 'k-table-tr-active')
     e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff'
     me.siblings(e.currentTarget).forEach(it => {
@@ -395,20 +387,9 @@ export default class Table extends Component {
 
     me.setState(
       {
-        show300: true
-      },
-      function () {
-        setTimeout (() => {
-          me.setState(
-            {
-              show300: false
-            }
-          )
-        }, 300)
-      
+        contentChange: true
       }
     )
-
     me.state.pagination.onChange(page)
   }
 
@@ -447,12 +428,12 @@ export default class Table extends Component {
     if (me.hasClass(obj, cls)) {  
 	    var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
 	    obj.className = obj.className.replace(reg, ' ');  
-	}  
+	  }  
   }
 
   componentWillReceiveProps (props) {
     const me = this
-    console.log(props)
+ 
     if (me.props.pagination && !Object.is(me.props.pagination.current, props.pagination.current)) {
       me.setState(
         {
@@ -480,7 +461,8 @@ export default class Table extends Component {
         color: props.color || {},
         onRowMouseEnter: props.onRowMouseEnter || function () {},
         onRowMouseLeave: props.onRowMouseLeave || function () {},
-        onLeftOneClick: props.onLeftOneClick || function () {}
+        onLeftOneClick: props.onLeftOneClick || function () {},
+        contentChange: false
       }
     )
   }
@@ -488,17 +470,15 @@ export default class Table extends Component {
   componentDidMount () {
     const me = this
 
-    timer300 = setTimeout(() => {
-      me.setState(
-        {
-          show300: false
-        }
-      )
-    },300)
+    me.setState(
+      {
+        contentChange: false
+      }
+    )
   }
 
   componentWillUnmount () {
-    clearTimeout(timer300)
+    
   }
 
   render () {
@@ -506,16 +486,16 @@ export default class Table extends Component {
 
     return (
       <div className={classNames(
-             'k-table',
+             tableCss['k-table'],
              {[this.state.className]: this.state.className},
-             {'k-table-drag-status': this.state.isDraging}
+             {[tableCss['k-table-drag-status']]: this.state.isDraging}
              )}
       >
         {
           me.state.header || me.state.canDrag && me.state.canDrag.switch
-            ? <div className={classNames('k-table-header', {'k-table-header-border': me.state.bordered})}>
+            ? <div className={classNames(tableCss['k-table-header'], {[tableCss['k-table-header-border']]: me.state.bordered})}>
                 {me.state.header}
-                <span className="k-table-drag-bt">
+                <span className={tableCss['k-table-drag-bt']}>
                    {
                      me.state.canDrag && me.state.canDrag.switch
                       ? me.state.isDraging
@@ -531,8 +511,15 @@ export default class Table extends Component {
               </div>
             : null
         }
-        <div className={classNames('k-table-content', {'k-table-bordered': me.state.bordered})}>
-          <div className="k-table-body">
+        <div className={classNames(tableCss['k-table-content'], {[tableCss['k-table-bordered']]: me.state.bordered})}>
+          <div 
+            className={tableCss["k-table-body"]}
+            style={
+              {
+                overflow: `${me.state.scroll ? 'auto' : 'visible'}`
+              }
+            }
+          >
             <table style={
               {
                 'width': me.state.scroll ? me.state.scroll.x : '100%',
@@ -547,7 +534,7 @@ export default class Table extends Component {
               {
                 me.state.thead 
                   ? <thead 
-                      className="k-table-thead"
+                      className={tableCss["k-table-thead"]}
                       style={{
                         background: me.state.color && me.state.color.theadColor
                       }}
@@ -560,38 +547,29 @@ export default class Table extends Component {
                     </thead>
                   : null
               }
-              <tbody className="k-table-tbody">
+              <tbody className={tableCss["k-table-tbody"]}>
                 {
-                  !me.state.show300
-                    ? me.renderTbody()
-                    : null
+                  me.renderTbody()
                 }
               </tbody>
             </table>
             {
-              (me.state.loading && !me.state.dataSource.length) && me.state.show300
-                ? <div className="k-table-loading">
-                    <a className="k-table-iconfont k-table-loading-icon">&#xe622;</a>
-                  </div>
-                : null
-            }
-            {
-              (!me.state.show300 && !me.state.dataSource.length)
-                ? <p className="k-table-no-content">暂无内容</p>
+              (!me.state.dataSource.length)
+                ? <p className={tableCss["k-table-no-content"]}>暂无内容</p>
                 : null
             }
           </div>
         </div>
         {
           me.state.footer
-            ? <div className={classNames('k-table-footer', {'k-table-footer-border': me.state.bordered})}>
+            ? <div className={classNames(tableCss['k-table-footer'], {[tableCss['k-table-footer-border']]: me.state.bordered})}>
                 {me.state.footer}
               </div>
             : null
         }
         {
           me.state.pagination && (!me.state.canDrag || !me.state.canDrag.switch)
-            ? <div className="k-table-pagination">
+            ? <div className={tableCss["k-table-pagination"]}>
                 <Pagination
                   current={me.state.pagination.current || 1}
                   pageSize={me.state.pagination.pageSize || 10}
@@ -601,6 +579,15 @@ export default class Table extends Component {
                   offset={me.state.pagination.offset || 4}
                   onChange={me.pageChange}
                 />
+              </div>
+            : null
+        }
+        {
+          (me.state.loading && me.state.contentChange)
+            ? <div className={tableCss["k-table-loading"]}>
+                <div className={tableCss["k-table-loading-content"]}>
+                  <a className={`${iconfontCss["k-table-iconfont"]} ${tableCss["k-table-loading-icon"]}`}>&#xe622;</a>
+                </div>
               </div>
             : null
         }
