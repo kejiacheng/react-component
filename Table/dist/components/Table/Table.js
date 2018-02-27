@@ -8,13 +8,13 @@ var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
-var _is = require('babel-runtime/core-js/object/is');
-
-var _is2 = _interopRequireDefault(_is);
-
 var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _is = require('babel-runtime/core-js/object/is');
+
+var _is2 = _interopRequireDefault(_is);
 
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
@@ -153,7 +153,7 @@ var Table = function (_Component) {
       var me = _this;
       var trArr = [];
       var n = Math.random().toString(36).substr(2);
-      console.log(me.state.dataSource);
+
       me.state.dataSource.forEach(function (it, index) {
         var tdArr = [];
 
@@ -183,12 +183,15 @@ var Table = function (_Component) {
         trArr.push(_react2.default.createElement(
           'tr',
           {
-            // className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
+            className: (0, _classnames2.default)({ 'k-table-tr-active': (0, _is2.default)(me.state.activeIndex, index) }),
             key: n + index,
             onMouseEnter: _this.trMouseEnter.bind(null, it, index),
             onMouseLeave: _this.trMouseLeave.bind(null, it, index),
             onMouseDown: _this.trMouseDown.bind(null, it, index),
-            onClick: _this.trLeftOneClick.bind(null, it, index)
+            onClick: _this.trLeftOneClick.bind(null, it, index),
+            style: {
+              background: '' + ((0, _is2.default)(me.state.activeIndex, index) ? me.state.color.clickColor || '#dbf0ff' : '#fff')
+            }
           },
           tdArr
         ));
@@ -348,6 +351,7 @@ var Table = function (_Component) {
         return;
       }
 
+      me.state.activeIndex = index;
       me.addClass(e.currentTarget, 'k-table-tr-active');
       e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff';
       me.siblings(e.currentTarget).forEach(function (it) {
@@ -469,7 +473,8 @@ var Table = function (_Component) {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(props) {
       var me = this;
-      console.log(props);
+
+      //翻页后取消激活索引
       if (me.props.pagination && !(0, _is2.default)(me.props.pagination.current, props.pagination.current)) {
         me.setState({
           activeIndex: null

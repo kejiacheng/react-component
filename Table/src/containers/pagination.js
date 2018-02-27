@@ -120,13 +120,23 @@ export default class pagination extends Component {
         let data = dataSource.slice((page - 1) * me.state.pageSize, (page - 1) * me.state.pageSize + 10)
         console.log(data)
       
-              me.setState(
+            me.setState(
+                {
+                    page,
+                    dataSource: data
+                }
+            )
+     
+    }
+
+    textareaChange = (e) => {
+        console.log(e.currentTarget.value)
+        dataSource[0].age = 11
+        this.setState(
             {
-                page,
-                dataSource: data
+                dataSource
             }
         )
-     
     }
 
     render () {
@@ -138,7 +148,7 @@ export default class pagination extends Component {
             key: 'name',
             width: '200px',
             render (data, record, index) {
-                return data
+                return <textarea onChange={me.textareaChange}></textarea>
             }
             },
             {

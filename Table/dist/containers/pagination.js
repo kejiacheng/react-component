@@ -148,6 +148,14 @@ var pagination = function (_Component) {
             });
         };
 
+        _this.textareaChange = function (e) {
+            console.log(e.currentTarget.value);
+            dataSource[0].age = 11;
+            _this.setState({
+                dataSource: dataSource
+            });
+        };
+
         _this.state = {
             dataSource: dataSource,
             page: 1,
@@ -166,7 +174,7 @@ var pagination = function (_Component) {
                 key: 'name',
                 width: '200px',
                 render: function render(data, record, index) {
-                    return data;
+                    return _react2.default.createElement('textarea', { onChange: me.textareaChange });
                 }
             }, {
                 title: 'age',

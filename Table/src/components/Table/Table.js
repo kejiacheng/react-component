@@ -165,12 +165,17 @@ export default class Table extends Component {
    
       trArr.push(
         <tr
-          // className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
+          className={classNames({'k-table-tr-active': Object.is(me.state.activeIndex, index)})}
           key={n + index}
           onMouseEnter={this.trMouseEnter.bind(null, it, index)}
           onMouseLeave={this.trMouseLeave.bind(null, it, index)}
           onMouseDown={this.trMouseDown.bind(null, it, index)}
           onClick={this.trLeftOneClick.bind(null, it, index)}
+          style={
+            {
+              background: `${Object.is(me.state.activeIndex, index) ? me.state.color.clickColor || '#dbf0ff' : '#fff'}`
+            }
+          }
         >
           {tdArr}
         </tr>
@@ -330,7 +335,8 @@ export default class Table extends Component {
     if (me.state.isDraging) {
       return
     }
-
+ 
+    me.state.activeIndex = index
     me.addClass(e.currentTarget, 'k-table-tr-active')
     e.currentTarget.style.background = me.state.color.clickColor || '#dbf0ff'
     me.siblings(e.currentTarget).forEach(it => {
@@ -434,6 +440,7 @@ export default class Table extends Component {
   componentWillReceiveProps (props) {
     const me = this
  
+    //翻页后取消激活索引
     if (me.props.pagination && !Object.is(me.props.pagination.current, props.pagination.current)) {
       me.setState(
         {
