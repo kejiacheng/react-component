@@ -26,6 +26,9 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Pagination from '@xm/Pagination'
 import FilterDropdown from './FilterDropdown'
+import { measureScrollbar } from './utils'
+import headTable from './headTable'
+import bodyTable from './bodyTable'
 import tableCss from './Table.scss'
 import iconfontCss from '../../styles/font/iconfont.scss'
 
@@ -53,6 +56,8 @@ let topArr = []
 //目标tr的index
 let currentPosition = 0
 let changedDataSource
+
+let scrollbar = measureScrollbar('horizontal')
 
 export default class Table extends Component {
   static propTypes = {
@@ -143,7 +148,7 @@ export default class Table extends Component {
   renderTbody = () => {
     const me = this
     let trArr = []
-    const n = Math.random().toString(36).substr(2)
+    const n = (me.state.canDrag && me.state.canDrag.switch) ? Math.random().toString(36).substr(2) : 0
    
     me.state.dataSource.forEach((it, index) => {
       let tdArr = []
@@ -399,6 +404,115 @@ export default class Table extends Component {
     me.state.pagination.onChange(page)
   }
 
+  handleBodyScrollLeft = (e) => {
+    if (e.currentTarget !== e.target) {
+      return;
+    }
+    const target = e.target;
+    const { scroll = {} } = this.props;
+    let { headTable, bodyTable } = this;
+    !headTable && (headTable = document.getElementsByClassName('k-table-body-header-dom')[0])
+    !bodyTable && (bodyTable = document.getElementsByClassName('k-table-body-dom')[0])
+
+    if (target.scrollLeft !== this.lastScrollLeft && scroll.x) {
+      if (target === bodyTable && headTable) {
+        headTable.scrollLeft = target.scrollLeft;
+      } else if (target === headTable && bodyTable) {
+        bodyTable.scrollLeft = target.scrollLeft;
+      }
+    }
+    this.lastScrollLeft = target.scrollLeft;
+  }
+
+  renderHeadTable = () => {
+    const me = this
+
+    const headTable = <div 
+    className={`${tableCss["k-table-body-header"]} k-table-body-header-dom`}
+    onScroll={me.handleBodyScrollLeft}
+    style={
+      {
+        marginBottom: `-${scrollbar}px`
+      }
+    }
+  >
+    <table style={
+      {
+        'width': me.state.scroll && me.state.scroll.x ? me.state.scroll.x : '100%'
+      }
+    }>
+      <colgroup>
+        {
+          me.setWidth()
+        }
+      </colgroup>
+      <thead>
+        {
+          me.renderThead()
+        }
+      </thead>
+    </table>
+  </div>
+
+  return headTable
+  }
+
+  renderbodyTable = () => {
+    const me = this
+
+    const bodyTable = <div 
+    className={`${tableCss["k-table-body"]} k-table-body-dom`}
+    onScroll={me.handleBodyScrollLeft}
+    style={
+      {
+        overflowX: `${me.state.scroll && me.state.scroll.x ? 'auto' : 'visible'}`,
+        overflowY: `${me.state.scroll && me.state.scroll.y ? 'scroll' : 'visible'}`,
+        maxHeight: `${me.state.scroll && me.state.scroll.y ? me.state.scroll.y : ''}`
+      }
+    }
+  >
+    <table style={
+      {
+        'width': me.state.scroll && me.state.scroll.x ? me.state.scroll.x : '100%'
+      }
+    }>
+      <colgroup>
+        {
+          me.setWidth()
+        }
+      </colgroup>
+      {
+        me.state.thead && !(me.state.scroll && me.state.scroll.y)
+          ? <thead 
+              className={tableCss["k-table-thead"]}
+              style={{
+                background: me.state.color && me.state.color.theadColor
+              }}
+            >
+              <tr>
+                {
+                  me.renderThead()
+                }
+              </tr>
+            </thead>
+          : null
+      }
+      <tbody className={tableCss["k-table-tbody"]}>
+        {
+          me.renderTbody()
+        }
+      </tbody>
+    </table>
+    {
+      (!me.state.dataSource.length)
+        ? <p className={tableCss["k-table-no-content"]}>暂无内容</p>
+        : null
+    }
+  </div>
+
+    return bodyTable
+  }
+
   siblings = (obj) => {
     let _nodes = []
     let elem = obj
@@ -519,53 +633,14 @@ export default class Table extends Component {
             : null
         }
         <div className={classNames(tableCss['k-table-content'], {[tableCss['k-table-bordered']]: me.state.bordered})}>
-          <div 
-            className={tableCss["k-table-body"]}
-            style={
-              {
-                overflow: `${me.state.scroll ? 'auto' : 'visible'}`
-              }
-            }
-          >
-            <table style={
-              {
-                'width': me.state.scroll ? me.state.scroll.x : '100%',
-                'height': me.state.scroll ? me.state.scroll.y : 'auto'
-              }
-            }>
-              <colgroup>
-                {
-                  me.setWidth()
-                }
-              </colgroup>
-              {
-                me.state.thead 
-                  ? <thead 
-                      className={tableCss["k-table-thead"]}
-                      style={{
-                        background: me.state.color && me.state.color.theadColor
-                      }}
-                    >
-                      <tr>
-                        {
-                          me.renderThead()
-                        }
-                      </tr>
-                    </thead>
-                  : null
-              }
-              <tbody className={tableCss["k-table-tbody"]}>
-                {
-                  me.renderTbody()
-                }
-              </tbody>
-            </table>
-            {
-              (!me.state.dataSource.length)
-                ? <p className={tableCss["k-table-no-content"]}>暂无内容</p>
-                : null
-            }
-          </div>
+          {
+            me.state.scroll && me.state.scroll.y 
+              ? me.renderHeadTable()
+              : null
+          }
+          {
+            me.renderbodyTable()
+          }
         </div>
         {
           me.state.footer

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Table from '../components/Table/Table'
+import './common.css'
 
 let dataSource = [
     {
@@ -110,7 +111,7 @@ export default class common extends Component {
                 onRowMouseLeave={function (data, index) {console.log(data, index)}}
                 onLeftOneClick={function (data, index) {console.log(data, index)}}
                 // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
-                scroll={{x: '1000px', y: '500px'}}
+                scroll={{x: '1000px', y: '100px'}}
             />
             </div>
         )

@@ -32,6 +32,8 @@ var _Table = require('../components/Table/Table');
 
 var _Table2 = _interopRequireDefault(_Table);
 
+require('./common.css');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var dataSource = [{
@@ -154,7 +156,7 @@ var common = function (_Component) {
                         console.log(data, index);
                     }
                     // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
-                    , scroll: { x: '1000px', y: '500px' }
+                    , scroll: { x: '1000px', y: '100px' }
                 })
             );
         }

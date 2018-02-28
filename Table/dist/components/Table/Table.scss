@@ -4,7 +4,6 @@
 .k-table{
 	position: relative;
 	font-size: 12px;
-	height: 100%;
 	&:after{
 	  clear: both;
 	  content: " ";
@@ -39,9 +38,45 @@
 	  border-width: 0 1px 1px 1px;
 	}
 	.k-table-content{
-		height: 100%;
+		.k-table-body-header{
+			overflow: scroll;
+			border-right: 1px solid #e9e9e9;
+			table{
+				width: 100%;
+				text-align: left;
+				font-weight: 500;
+				border-spacing: 0;
+				position: relative;
+				thead{
+					background: #f7f7f7;
+				}
+				th{
+					padding: 16px 8px;
+					border-bottom: 1px solid #e9e9e9;
+					border-top: 1px solid #e9e9e9;
+					box-sizing: border-box;
+					.k-table-th-filter{
+						margin-left: 5px;
+						cursor: pointer;
+						position: relative;
+						.k-table-arrow-down{
+							font-size: 12px;
+							img{
+								width: 12px;
+							}
+						}
+						.k-table-th-filter-dropdown{
+							cursor: default;
+							position: absolute;
+							top: 20px;
+							left: 0;
+						}
+					}
+				}
+			}
+	
+		}
 	  .k-table-body{
-			height: 100%;
 			table{
 				width: 100%;
 				text-align: left;
@@ -74,6 +109,7 @@
 				box-sizing: border-box;
 				}
 				th{
+					border-top: 1px solid #e9e9e9;
 					.k-table-th-filter{
 						margin-left: 5px;
 						cursor: pointer;
@@ -102,13 +138,25 @@
 	  }
 	}
 	.k-table-bordered{
+		.k-table-body-header{
+			border-left: 1px solid #e9e9e9;
+			overflow: scroll;
+			th{
+				border-right:1px solid #e9e9e9;
+				// &:first-child{
+				// 	border-left: 1px solid #e9e9e9;
+				// }
+			}
+		}
 	  .k-table-body{
+			border-left: 1px solid #e9e9e9;
 		table{
-		  border: solid #e9e9e9;
-		  border-width: 1px 0 0 1px;
 		  th, td{
-			border-right:1px solid #e9e9e9;
-		  }
+				border-right:1px solid #e9e9e9;
+			}
+			// td:first-child{
+			// 	border-left: 1px solid #e9e9e9;
+			// }
 		}
 		.k-table-loading{
 		  border-width: 0 1px 1px 1px;
@@ -138,17 +186,17 @@
 			margin: auto;
 		}
 		.k-table-loading-icon{
-		font-size: 30px;
-		color: #108ee9;
-		animation: rotation 0.6s steps(8, end) infinite;
-		display: inline-block;
-		}
-		@keyframes rotation{
-		from {transform: rotate(0deg);}
-		to {transform: rotate(360deg);}
+			font-size: 30px;
+			color: #108ee9;
+			animation: rotation 0.6s steps(8, end) infinite;
+			display: inline-block;
+			}
+			@keyframes rotation{
+			from {transform: rotate(0deg);}
+			to {transform: rotate(360deg);}
+			}
 		}
 	}
-}
   .k-table-drag-status{
-	user-select: none;
+		user-select: none;
   }

@@ -52,6 +52,16 @@ var _FilterDropdown = require('./FilterDropdown');
 
 var _FilterDropdown2 = _interopRequireDefault(_FilterDropdown);
 
+var _utils = require('./utils');
+
+var _headTable = require('./headTable');
+
+var _headTable2 = _interopRequireDefault(_headTable);
+
+var _bodyTable = require('./bodyTable');
+
+var _bodyTable2 = _interopRequireDefault(_bodyTable);
+
 var _Table = require('./Table.scss');
 
 var _Table2 = _interopRequireDefault(_Table);
@@ -71,30 +81,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * currentY 鼠标在y的位置
 * placeholderTr 占位空白tr
 * */
-/*
- * param
- * className
- * bordered 是否显示边框 默认为无
- * columns 表格列配置项
- * columns {
- *  title        列名
- *  dataIndex    dataSource数据对应的key 支持多层级 例a.b.c
- *  key          React唯一key
- *  width        列宽度 支持px和%
- *  render       数据复杂渲染函数      未填则直接渲染值
- * }
- * dataSource 数据来源
- * header 表格头部 来渲染字符串和react元素
- * footer 表格头部 来渲染字符串和react元素
- * pagination 表格对应页 未填则不显示 若需要则根据pagination组件所需参数配置 当允许拖拽时 不允许使用分页
- * loading 数据未加载时是否显示loading 默认显示
- * scroll 表格是否显示scroll 例{x: '1000px', y: '500px'}
- * onRowMouseEnter 行mouseEnter函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
- * onRowMouseLeave 行mouseLeave函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
- * onLeftOneClick 行左鼠标单次点击函数 参数：data（当前行数据），index（当前行index），e（当前行e）
- * canDrag{switch: bool, callback: func} switch控制是否允许拖拽 callback拖拽完成后回调函数 参数：当前数据排序
- * color{theadColor: string, hoverColor: string, clickColor: string}
- */
 var params = {
   canMove: false,
   target: null,
@@ -105,10 +91,36 @@ var params = {
   placeholderTr: null
 
   //所有tr的offsetTop的数组
-};var topArr = [];
+}; /*
+    * param
+    * className
+    * bordered 是否显示边框 默认为无
+    * columns 表格列配置项
+    * columns {
+    *  title        列名
+    *  dataIndex    dataSource数据对应的key 支持多层级 例a.b.c
+    *  key          React唯一key
+    *  width        列宽度 支持px和%
+    *  render       数据复杂渲染函数      未填则直接渲染值
+    * }
+    * dataSource 数据来源
+    * header 表格头部 来渲染字符串和react元素
+    * footer 表格头部 来渲染字符串和react元素
+    * pagination 表格对应页 未填则不显示 若需要则根据pagination组件所需参数配置 当允许拖拽时 不允许使用分页
+    * loading 数据未加载时是否显示loading 默认显示
+    * scroll 表格是否显示scroll 例{x: '1000px', y: '500px'}
+    * onRowMouseEnter 行mouseEnter函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
+    * onRowMouseLeave 行mouseLeave函数 参数：data（当前行数据）, index（当前行index）, e（当前行e）
+    * onLeftOneClick 行左鼠标单次点击函数 参数：data（当前行数据），index（当前行index），e（当前行e）
+    * canDrag{switch: bool, callback: func} switch控制是否允许拖拽 callback拖拽完成后回调函数 参数：当前数据排序
+    * color{theadColor: string, hoverColor: string, clickColor: string}
+    */
+var topArr = [];
 //目标tr的index
 var currentPosition = 0;
 var changedDataSource = void 0;
+
+var scrollbar = (0, _utils.measureScrollbar)('horizontal');
 
 var Table = function (_Component) {
   (0, _inherits3.default)(Table, _Component);
@@ -152,7 +164,7 @@ var Table = function (_Component) {
     _this.renderTbody = function () {
       var me = _this;
       var trArr = [];
-      var n = Math.random().toString(36).substr(2);
+      var n = me.state.canDrag && me.state.canDrag.switch ? Math.random().toString(36).substr(2) : 0;
 
       me.state.dataSource.forEach(function (it, index) {
         var tdArr = [];
@@ -406,6 +418,116 @@ var Table = function (_Component) {
       me.state.pagination.onChange(page);
     };
 
+    _this.handleBodyScrollLeft = function (e) {
+      if (e.currentTarget !== e.target) {
+        return;
+      }
+      var target = e.target;
+      var _this$props$scroll = _this.props.scroll,
+          scroll = _this$props$scroll === undefined ? {} : _this$props$scroll;
+      var headTable = _this.headTable,
+          bodyTable = _this.bodyTable;
+
+      !headTable && (headTable = document.getElementsByClassName('k-table-body-header-dom')[0]);
+      !bodyTable && (bodyTable = document.getElementsByClassName('k-table-body-dom')[0]);
+
+      if (target.scrollLeft !== _this.lastScrollLeft && scroll.x) {
+        if (target === bodyTable && headTable) {
+          headTable.scrollLeft = target.scrollLeft;
+        } else if (target === headTable && bodyTable) {
+          bodyTable.scrollLeft = target.scrollLeft;
+        }
+      }
+      _this.lastScrollLeft = target.scrollLeft;
+    };
+
+    _this.renderHeadTable = function () {
+      var me = _this;
+
+      var headTable = _react2.default.createElement(
+        'div',
+        {
+          className: _Table2.default["k-table-body-header"] + ' k-table-body-header-dom',
+          onScroll: me.handleBodyScrollLeft,
+          style: {
+            marginBottom: '-' + scrollbar + 'px'
+          }
+        },
+        _react2.default.createElement(
+          'table',
+          { style: {
+              'width': me.state.scroll && me.state.scroll.x ? me.state.scroll.x : '100%'
+            } },
+          _react2.default.createElement(
+            'colgroup',
+            null,
+            me.setWidth()
+          ),
+          _react2.default.createElement(
+            'thead',
+            null,
+            me.renderThead()
+          )
+        )
+      );
+
+      return headTable;
+    };
+
+    _this.renderbodyTable = function () {
+      var me = _this;
+
+      var bodyTable = _react2.default.createElement(
+        'div',
+        {
+          className: _Table2.default["k-table-body"] + ' k-table-body-dom',
+          onScroll: me.handleBodyScrollLeft,
+          style: {
+            overflowX: '' + (me.state.scroll && me.state.scroll.x ? 'auto' : 'visible'),
+            overflowY: '' + (me.state.scroll && me.state.scroll.y ? 'scroll' : 'visible'),
+            maxHeight: '' + (me.state.scroll && me.state.scroll.y ? me.state.scroll.y : '')
+          }
+        },
+        _react2.default.createElement(
+          'table',
+          { style: {
+              'width': me.state.scroll && me.state.scroll.x ? me.state.scroll.x : '100%'
+            } },
+          _react2.default.createElement(
+            'colgroup',
+            null,
+            me.setWidth()
+          ),
+          me.state.thead && !(me.state.scroll && me.state.scroll.y) ? _react2.default.createElement(
+            'thead',
+            {
+              className: _Table2.default["k-table-thead"],
+              style: {
+                background: me.state.color && me.state.color.theadColor
+              }
+            },
+            _react2.default.createElement(
+              'tr',
+              null,
+              me.renderThead()
+            )
+          ) : null,
+          _react2.default.createElement(
+            'tbody',
+            { className: _Table2.default["k-table-tbody"] },
+            me.renderTbody()
+          )
+        ),
+        !me.state.dataSource.length ? _react2.default.createElement(
+          'p',
+          { className: _Table2.default["k-table-no-content"] },
+          '\u6682\u65E0\u5185\u5BB9'
+        ) : null
+      );
+
+      return bodyTable;
+    };
+
     _this.siblings = function (obj) {
       var _nodes = [];
       var elem = obj;
@@ -554,51 +676,8 @@ var Table = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: (0, _classnames2.default)(_Table2.default['k-table-content'], (0, _defineProperty3.default)({}, _Table2.default['k-table-bordered'], me.state.bordered)) },
-          _react2.default.createElement(
-            'div',
-            {
-              className: _Table2.default["k-table-body"],
-              style: {
-                overflow: '' + (me.state.scroll ? 'auto' : 'visible')
-              }
-            },
-            _react2.default.createElement(
-              'table',
-              { style: {
-                  'width': me.state.scroll ? me.state.scroll.x : '100%',
-                  'height': me.state.scroll ? me.state.scroll.y : 'auto'
-                } },
-              _react2.default.createElement(
-                'colgroup',
-                null,
-                me.setWidth()
-              ),
-              me.state.thead ? _react2.default.createElement(
-                'thead',
-                {
-                  className: _Table2.default["k-table-thead"],
-                  style: {
-                    background: me.state.color && me.state.color.theadColor
-                  }
-                },
-                _react2.default.createElement(
-                  'tr',
-                  null,
-                  me.renderThead()
-                )
-              ) : null,
-              _react2.default.createElement(
-                'tbody',
-                { className: _Table2.default["k-table-tbody"] },
-                me.renderTbody()
-              )
-            ),
-            !me.state.dataSource.length ? _react2.default.createElement(
-              'p',
-              { className: _Table2.default["k-table-no-content"] },
-              '\u6682\u65E0\u5185\u5BB9'
-            ) : null
-          )
+          me.state.scroll && me.state.scroll.y ? me.renderHeadTable() : null,
+          me.renderbodyTable()
         ),
         me.state.footer ? _react2.default.createElement(
           'div',
