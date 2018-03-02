@@ -5,6 +5,7 @@ import common from '../containers/common'
 import filter from '../containers/filter'
 import drag from '../containers/drag'
 import pagination from '../containers/pagination'
+import test from '../containers/test'
 
 export default () => (
     <HashRouter>
@@ -14,6 +15,7 @@ export default () => (
             <Route exact path={'/filter'} component={filter}/>
             <Route exact path={'/drag'} component={drag}/>
             <Route exact path={'/pagination'} component={pagination}/>
+            <Route exact path={'/test'} component={test}/>
         </Switch>
     </HashRouter>
 )

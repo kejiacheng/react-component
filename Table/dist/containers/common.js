@@ -108,7 +108,7 @@ var common = function (_Component) {
                 title: 'sex',
                 dataIndex: 'sex',
                 key: 'sex',
-                width: '100px',
+                width: '700px',
                 render: function render(data, record, index) {
                     return data;
                 }
@@ -116,15 +116,22 @@ var common = function (_Component) {
                 title: 'address',
                 dataIndex: 'address',
                 key: 'address',
-                width: '100px',
+                width: '500px',
                 render: function render(data, record, index) {
                     return data;
+                },
+
+                thStyle: {
+                    borderColor: 'red'
+                },
+                tdStyle: {
+                    borderColor: 'green'
                 }
             }, {
                 title: 'money',
                 dataIndex: 'wallet.money',
                 key: 'money',
-                width: '100px'
+                width: '500px'
             }];
 
             return _react2.default.createElement(
@@ -156,7 +163,8 @@ var common = function (_Component) {
                         console.log(data, index);
                     }
                     // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
-                    , scroll: { x: '1000px', y: '100px' }
+                    // scroll={{x: '100%', y: '100px', minX: '1200px', minY: '70px'}}
+                    , scroll: { x: '1200px', y: '100px' }
                 })
             );
         }

@@ -32,6 +32,8 @@ var _Table = require('../components/Table/Table');
 
 var _Table2 = _interopRequireDefault(_Table);
 
+require('./common.css');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var dataSource = [{
@@ -68,17 +70,17 @@ var dataSource = [{
     }
 }];
 
-var drag = function (_Component) {
-    (0, _inherits3.default)(drag, _Component);
+var test = function (_Component) {
+    (0, _inherits3.default)(test, _Component);
 
-    function drag() {
-        (0, _classCallCheck3.default)(this, drag);
+    function test() {
+        (0, _classCallCheck3.default)(this, test);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, (drag.__proto__ || (0, _getPrototypeOf2.default)(drag)).call(this));
+        var _this = (0, _possibleConstructorReturn3.default)(this, (test.__proto__ || (0, _getPrototypeOf2.default)(test)).call(this));
 
         _this.click = function () {
             var me = _this;
-
+            var data = dataSource.slice(0);
             me.setState({
                 switch: !me.state.switch
             });
@@ -87,6 +89,7 @@ var drag = function (_Component) {
         _this.cb = function (data) {
             var me = _this;
             console.log(data);
+            console.log(data = data.slice(1));
             me.setState({
                 dataSource: data
             });
@@ -95,16 +98,16 @@ var drag = function (_Component) {
         _this.state = {
             dataSource: dataSource,
             page: 1,
-            switch: false
+            switch: true
         };
         return _this;
     }
 
-    (0, _createClass3.default)(drag, [{
+    (0, _createClass3.default)(test, [{
         key: 'render',
         value: function render() {
             var columns = [{
-                title: 'name',
+                title: 'name1',
                 dataIndex: 'name',
                 key: 'name',
                 width: '200px',
@@ -112,7 +115,7 @@ var drag = function (_Component) {
                     return data;
                 }
             }, {
-                title: 'age',
+                title: 'age32',
                 dataIndex: 'age',
                 key: 'age',
                 width: '150px',
@@ -120,23 +123,23 @@ var drag = function (_Component) {
                     return data;
                 }
             }, {
-                title: 'sex',
+                title: 'sex43',
                 dataIndex: 'sex',
                 key: 'sex',
-                width: '100px',
+                width: '300px',
                 render: function render(data, record, index) {
                     return data;
                 }
             }, {
-                title: 'address',
+                title: 'address23',
                 dataIndex: 'address',
                 key: 'address',
-                width: '100px',
+                width: '200px',
                 render: function render(data, record, index) {
                     return data;
                 }
             }, {
-                title: 'money',
+                title: 'money2',
                 dataIndex: 'wallet.money',
                 key: 'money',
                 width: '200px'
@@ -144,35 +147,45 @@ var drag = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { style: { width: '800px', margin: '100px auto' } },
+                null,
                 _react2.default.createElement(_Table2.default, {
                     className: 'just-test',
                     bordered: true,
                     columns: columns,
-                    dataSource: this.state.dataSource,
-                    header: _react2.default.createElement(
-                        'div',
-                        null,
-                        '213'
-                    ),
-                    footer: _react2.default.createElement(
-                        'div',
-                        { style: { 'textAlign': 'center' } },
-                        '456'
-                    ),
-                    loading: true,
+                    dataSource: this.state.dataSource
+                    // header={<div>213</div>}
+                    // footer={<div style={{'textAlign': 'center'}}>456</div>}
+                    , loading: true,
+                    onRowMouseEnter: function onRowMouseEnter(data, index) {
+                        console.log(data, index);
+                    },
+                    onRowMouseLeave: function onRowMouseLeave(data, index) {
+                        console.log(data, index);
+                    },
+                    onLeftOneClick: function onLeftOneClick(data, index) {
+                        console.log(data, index);
+                    }
+                    // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
+                    , thead: false,
+                    pagination: {
+                        current: this.state.page,
+                        pageSize: this.state.pageSize,
+                        total: dataSource.length,
+                        onChange: this.change,
+                        showInfo: true,
+                        showQuickJumper: true
+                    },
                     canDrag: { 'switch': this.state.switch, 'callback': this.cb }
-                    // scroll={{x: '1500px'}}
                 }),
                 _react2.default.createElement(
                     'p',
                     { onClick: this.click },
-                    this.state.switch ? '保存' : '排序'
+                    '\u70B9\u51FB'
                 )
             );
         }
     }]);
-    return drag;
+    return test;
 }(_react.Component);
 
-exports.default = drag;
+exports.default = test;

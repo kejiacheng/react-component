@@ -46,8 +46,29 @@ export default class drag extends Component {
 
         this.state = {
             dataSource,
-            page: 1
+            page: 1,
+            switch: false
         }
+    }
+
+    click = () => {
+        const me = this
+
+        me.setState(
+            {
+                switch: !me.state.switch
+            }
+        )
+    }
+
+    cb = (data) => {
+        const me = this
+        console.log(data)
+        me.setState(
+            {
+                dataSource: data
+            }
+        )
     }
 
     render () {
@@ -91,22 +112,31 @@ export default class drag extends Component {
             {
             title: 'money',
             dataIndex: 'wallet.money',
-            key: 'money'
+            key: 'money',
+            width: '200px'
             }
         ]
 
         return (
             <div style={{width: '800px', margin: '100px auto'}}>
-            <Table 
-                className="just-test"
-                bordered
-                columns={columns}
-                dataSource={this.state.dataSource}
-                header={<div>213</div>}
-                footer={<div style={{'textAlign': 'center'}}>456</div>}
-                loading={true}
-                canDrag={{'switch': true, 'callback': function (data) {console.log(data)}}}
-            />
+                <Table 
+                    className="just-test"
+                    bordered
+                    columns={columns}
+                    dataSource={this.state.dataSource}
+                    header={<div>213</div>}
+                    footer={<div style={{'textAlign': 'center'}}>456</div>}
+                    loading={true}
+                    canDrag={{'switch': this.state.switch, 'callback': this.cb}}
+                    // scroll={{x: '1500px'}}
+                />
+                <p onClick={this.click}>
+                    {
+                        this.state.switch
+                            ?   '保存'
+                            :   '排序'
+                    }
+                </p>
             </div>
         )
     }

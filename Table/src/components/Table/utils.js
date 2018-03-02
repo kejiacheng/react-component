@@ -34,3 +34,41 @@ export function measureScrollbar(direction = 'vertical') {
   scrollbarSize = size;
   return scrollbarSize;
 }
+
+export function siblings(obj) {
+    let _nodes = []
+    let elem = obj
+    let _elem = obj
+    while ((_elem = _elem.previousSibling)){
+        if(_elem.nodeType === 1){
+            _nodes.push(_elem);
+        }
+    }
+    while ((elem = elem.nextSibling)){
+        if(elem.nodeType === 1){
+            _nodes.push(elem);
+
+        }
+    }
+
+    return _nodes;
+}
+
+export function hasClass(obj, cls) {
+    return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+}
+
+export function addClass(obj, cls) {
+    const me = this
+  
+    if (!hasClass(obj,cls)) obj.className += " " + cls;  
+}
+
+export function removeClass(obj, cls) {
+    const me = this
+
+    if (hasClass(obj, cls)) {  
+	    var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+	    obj.className = obj.className.replace(reg, ' ');  
+	}  
+}

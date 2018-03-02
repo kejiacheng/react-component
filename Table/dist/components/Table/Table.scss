@@ -40,7 +40,6 @@
 	.k-table-content{
 		.k-table-body-header{
 			overflow: scroll;
-			border-right: 1px solid #e9e9e9;
 			table{
 				width: 100%;
 				text-align: left;
@@ -55,6 +54,7 @@
 					border-bottom: 1px solid #e9e9e9;
 					border-top: 1px solid #e9e9e9;
 					box-sizing: border-box;
+					word-break: break-all;
 					.k-table-th-filter{
 						margin-left: 5px;
 						cursor: pointer;
@@ -90,15 +90,9 @@
 				tr{
 					background: #fff;
 					transition: background .3s ease;
-					// &:hover{
-					// 	background: #ecf6fd;
-					// }
 					td{
 					word-break: break-all;
 					}
-				}
-				.k-table-tr-active{
-					// background: #dbf0ff;
 				}
 				}
 				th, td{
@@ -138,29 +132,18 @@
 	  }
 	}
 	.k-table-bordered{
+		table{
+			border-collapse: separate;
+			th, td{
+				border-right:1px solid #e9e9e9;
+			}
+		}
 		.k-table-body-header{
 			border-left: 1px solid #e9e9e9;
 			overflow: scroll;
-			th{
-				border-right:1px solid #e9e9e9;
-				// &:first-child{
-				// 	border-left: 1px solid #e9e9e9;
-				// }
-			}
 		}
 	  .k-table-body{
 			border-left: 1px solid #e9e9e9;
-		table{
-		  th, td{
-				border-right:1px solid #e9e9e9;
-			}
-			// td:first-child{
-			// 	border-left: 1px solid #e9e9e9;
-			// }
-		}
-		.k-table-loading{
-		  border-width: 0 1px 1px 1px;
-		}
 	  }
 	}
 	.k-table-pagination{

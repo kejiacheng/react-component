@@ -130,11 +130,13 @@ export default class pagination extends Component {
     }
 
     textareaChange = (e) => {
+        const me = this
         console.log(e.currentTarget.value)
+        let data = dataSource.slice((this.state.page - 1) * me.state.pageSize, (this.state.page - 1) * me.state.pageSize + 10)
         dataSource[0].age = 11
         this.setState(
             {
-                dataSource
+                dataSource: data
             }
         )
     }
@@ -204,7 +206,7 @@ export default class pagination extends Component {
                         showInfo: true,
                         showQuickJumper: true
                     }
-                    }
+                }
                 loading={true}
             />
             </div>

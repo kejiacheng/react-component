@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.measureScrollbar = measureScrollbar;
+exports.siblings = siblings;
+exports.hasClass = hasClass;
+exports.addClass = addClass;
+exports.removeClass = removeClass;
 
 var scrollbarSize = void 0;
 
@@ -41,4 +45,41 @@ function measureScrollbar() {
   document.body.removeChild(scrollDiv);
   scrollbarSize = size;
   return scrollbarSize;
+}
+
+function siblings(obj) {
+  var _nodes = [];
+  var elem = obj;
+  var _elem = obj;
+  while (_elem = _elem.previousSibling) {
+    if (_elem.nodeType === 1) {
+      _nodes.push(_elem);
+    }
+  }
+  while (elem = elem.nextSibling) {
+    if (elem.nodeType === 1) {
+      _nodes.push(elem);
+    }
+  }
+
+  return _nodes;
+}
+
+function hasClass(obj, cls) {
+  return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+}
+
+function addClass(obj, cls) {
+  var me = this;
+
+  if (!hasClass(obj, cls)) obj.className += " " + cls;
+}
+
+function removeClass(obj, cls) {
+  var me = this;
+
+  if (hasClass(obj, cls)) {
+    var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+    obj.className = obj.className.replace(reg, ' ');
+  }
 }

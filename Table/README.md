@@ -158,6 +158,18 @@
     <td>-</td>
   </tr>
   <tr>
+    <td>thStyle</td>
+    <td>th自定义样式</td>
+    <td>object</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>tdStyle</td>
+    <td>td自定义样式</td>
+    <td>object</td>
+    <td>-</td>
+  </tr>
+  <tr>
     <td>render</td>
     <td>当前值， 当前行值， 当前行索引</td>
     <td>Function (text, record, index)</td>

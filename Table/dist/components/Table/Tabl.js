@@ -74,7 +74,89 @@ var Table = function (_Component) {
 
         var _this = (0, _possibleConstructorReturn3.default)(this, (Table.__proto__ || (0, _getPrototypeOf2.default)(Table)).call(this));
 
-        _initialiseProps.call(_this);
+        _this.renderTable = function () {
+            var me = _this;
+            var _me$state = me.state,
+                columns = _me$state.columns,
+                scroll = _me$state.scroll,
+                color = _me$state.color,
+                onRowMouseEnter = _me$state.onRowMouseEnter,
+                onRowMouseLeave = _me$state.onRowMouseLeave,
+                onLeftOneClick = _me$state.onLeftOneClick,
+                dataSource = _me$state.dataSource,
+                canDrag = _me$state.canDrag,
+                activeIndex = _me$state.activeIndex;
+
+
+            var headTable = _react2.default.createElement(_HeadTable2.default, {
+                columns: columns,
+                scroll: scroll,
+                color: color,
+                handleBodyScrollLeft: me.handleBodyScrollLeft,
+                key: 'headTable'
+            });
+
+            var bodyTable = _react2.default.createElement(_BodyTable2.default, {
+                columns: columns,
+                scroll: scroll,
+                color: color,
+                dataSource: dataSource,
+                handleBodyScrollLeft: me.handleBodyScrollLeft,
+                onRowMouseEnter: onRowMouseEnter,
+                onRowMouseLeave: onRowMouseLeave,
+                onLeftOneClick: onLeftOneClick,
+                canDrag: canDrag,
+                activeIndex: activeIndex,
+                modifyActiveIndex: me.modifyActiveIndex,
+                key: 'bodyTable'
+            });
+
+            if (scroll && scroll.y) {
+                return [headTable, bodyTable];
+            } else {
+                return [bodyTable];
+            }
+        };
+
+        _this.modifyActiveIndex = function (value) {
+            var me = _this;
+
+            me.setState({
+                activeIndex: value
+            });
+        };
+
+        _this.pageChange = function (page) {
+            var me = _this;
+
+            me.setState({
+                contentChange: true
+            });
+            me.state.pagination.onChange(page);
+        };
+
+        _this.handleBodyScrollLeft = function (e) {
+            if (e.currentTarget !== e.target) {
+                return;
+            }
+            var target = e.target;
+            var _this$props$scroll = _this.props.scroll,
+                scroll = _this$props$scroll === undefined ? {} : _this$props$scroll;
+            var headTable = _this.headTable,
+                bodyTable = _this.bodyTable;
+
+            !headTable && (headTable = document.getElementsByClassName('k-table-body-header-dom')[0]);
+            !bodyTable && (bodyTable = document.getElementsByClassName('k-table-body-dom')[0]);
+
+            if (target.scrollLeft !== _this.lastScrollLeft && scroll.x) {
+                if (target === bodyTable && headTable) {
+                    headTable.scrollLeft = target.scrollLeft;
+                } else if (target === headTable && bodyTable) {
+                    bodyTable.scrollLeft = target.scrollLeft;
+                }
+            }
+            _this.lastScrollLeft = target.scrollLeft;
+        };
 
         var thead = (0, _is2.default)(props.thead, false) ? false : true;
         var loading = (0, _is2.default)(props.loading, false) ? false : true;
@@ -219,96 +301,4 @@ Table.propTypes = {
     onRowMouseLeave: _react2.default.PropTypes.func,
     onLeftOneClick: _react2.default.PropTypes.func
 };
-
-var _initialiseProps = function _initialiseProps() {
-    var _this2 = this;
-
-    this.renderTable = function () {
-        var me = _this2;
-        var _me$state = me.state,
-            columns = _me$state.columns,
-            scroll = _me$state.scroll,
-            color = _me$state.color,
-            onRowMouseEnter = _me$state.onRowMouseEnter,
-            onRowMouseLeave = _me$state.onRowMouseLeave,
-            onLeftOneClick = _me$state.onLeftOneClick,
-            dataSource = _me$state.dataSource,
-            canDrag = _me$state.canDrag,
-            activeIndex = _me$state.activeIndex,
-            thead = _me$state.thead;
-
-
-        var headTable = _react2.default.createElement(_HeadTable2.default, {
-            columns: columns,
-            scroll: scroll,
-            color: color,
-            handleBodyScrollLeft: me.handleBodyScrollLeft,
-            thead: thead,
-            key: 'headTable'
-        });
-
-        var bodyTable = _react2.default.createElement(_BodyTable2.default, {
-            columns: columns,
-            scroll: scroll,
-            color: color,
-            dataSource: dataSource,
-            handleBodyScrollLeft: me.handleBodyScrollLeft,
-            onRowMouseEnter: onRowMouseEnter,
-            onRowMouseLeave: onRowMouseLeave,
-            onLeftOneClick: onLeftOneClick,
-            canDrag: canDrag,
-            activeIndex: activeIndex,
-            modifyActiveIndex: me.modifyActiveIndex,
-            thead: thead,
-            key: 'bodyTable'
-        });
-
-        if (scroll && scroll.y) {
-            return [headTable, bodyTable];
-        } else {
-            return [bodyTable];
-        }
-    };
-
-    this.modifyActiveIndex = function (value) {
-        var me = _this2;
-
-        me.setState({
-            activeIndex: value
-        });
-    };
-
-    this.pageChange = function (page) {
-        var me = _this2;
-
-        me.setState({
-            contentChange: true
-        });
-        me.state.pagination.onChange(page);
-    };
-
-    this.handleBodyScrollLeft = function (e) {
-        if (e.currentTarget !== e.target) {
-            return;
-        }
-        var target = e.target;
-        var _props$scroll = _this2.props.scroll,
-            scroll = _props$scroll === undefined ? {} : _props$scroll;
-        var headTable = _this2.headTable,
-            bodyTable = _this2.bodyTable;
-
-        !headTable && (headTable = document.getElementsByClassName('k-table-body-header-dom')[0]);
-        !bodyTable && (bodyTable = document.getElementsByClassName('k-table-body-dom')[0]);
-
-        if (target.scrollLeft !== _this2.lastScrollLeft && scroll.x) {
-            if (target === bodyTable && headTable) {
-                headTable.scrollLeft = target.scrollLeft;
-            } else if (target === headTable && bodyTable) {
-                bodyTable.scrollLeft = target.scrollLeft;
-            }
-        }
-        _this2.lastScrollLeft = target.scrollLeft;
-    };
-};
-
 exports.default = Table;

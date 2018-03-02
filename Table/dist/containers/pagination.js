@@ -149,10 +149,12 @@ var pagination = function (_Component) {
         };
 
         _this.textareaChange = function (e) {
+            var me = _this;
             console.log(e.currentTarget.value);
+            var data = dataSource.slice((_this.state.page - 1) * me.state.pageSize, (_this.state.page - 1) * me.state.pageSize + 10);
             dataSource[0].age = 11;
             _this.setState({
-                dataSource: dataSource
+                dataSource: data
             });
         };
 
