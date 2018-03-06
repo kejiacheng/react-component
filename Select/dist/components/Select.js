@@ -40,7 +40,7 @@ var Select = function (_super) {
     __extends(Select, _super);
     function Select(props) {
         var _this = _super.call(this, props) || this;
-        _this.clearData = function () {
+        _this.clearData = function (e) {
             var me = _this;
             var targetInput = document.querySelector('.k-select-search-input-dom');
             me.setState({
@@ -52,6 +52,8 @@ var Select = function (_super) {
                     targetInput.value = '';
                 }
             });
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
         };
         _this.showOptionWrapper = function (e) {
             var me = _this;
@@ -60,6 +62,7 @@ var Select = function (_super) {
             me.setState({
                 optionWrapperShow: true
             });
+            e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
         };
         _this.inputChangeEvent = function (e) {
@@ -78,6 +81,7 @@ var Select = function (_super) {
         };
         _this.optionClick = function (value, text, disabled, e) {
             if (disabled) {
+                e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
                 return;
             }

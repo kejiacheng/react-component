@@ -14,7 +14,7 @@ interface OptionProps {
     title?: string
   }
 
-interface SelectProps { 
+interface SelectProps {
     style?: React.CSSProperties
     selectClassName?: string
     optionClassName?: string
@@ -58,7 +58,7 @@ class Select extends React.Component<SelectProps, {}> {
         }
     }
 
-    clearData = () => {
+    clearData = (e: any) => {
         const me = this
         const targetInput: HTMLInputElement = document.querySelector('.k-select-search-input-dom')
      
@@ -74,6 +74,8 @@ class Select extends React.Component<SelectProps, {}> {
                 }
             }
         )
+        e.stopPropagation()
+        e.nativeEvent.stopImmediatePropagation()
     }
 
     showOptionWrapper = (e: any) => {
@@ -88,6 +90,7 @@ class Select extends React.Component<SelectProps, {}> {
             }
         )
 
+        e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation()
     }
 
@@ -113,6 +116,7 @@ class Select extends React.Component<SelectProps, {}> {
 
     optionClick = (value: any, text: string, disabled: boolean, e: any): void => {
         if (disabled) {
+            e.stopPropagation()
             e.nativeEvent.stopImmediatePropagation()
             return
         }
