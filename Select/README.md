@@ -71,6 +71,12 @@
     <td>boolean</td>
     <td>Function(text)</td>
   </tr>
+  <tr>
+    <td>value</td>
+    <td>改变value</td>
+    <td>any</td>
+    <td>-</td>
+  </tr>
 </table>
 
 #### Option
@@ -84,21 +90,37 @@
     <th>默认值</th>
   </tr>
   <tr>
-    <th>disabled</th>
-    <th>是否不能被选中</th>
-    <th>boolean</th>
-    <th>false</th>
+    <td>disabled</td>
+    <td>是否不能被选中</td>
+    <td>boolean</td>
+    <td>false</td>
   </tr>
   <tr>
-    <th>title</th>
-    <th>选项的title</th>
-    <th>string</th>
-    <th>-</th>
+    <td>title</td>
+    <td>选项的title</td>
+    <td>string</td>
+    <td>-</td>
   </tr>
   <tr>
-    <th>value</th>
-    <th>选项的value</th>
-    <th>any</th>
-    <th>-</th>
+    <td>value</td>
+    <td>选项的value</td>
+    <td>any</td>
+    <td>-</td>
+  </tr>
+</table>
+
+
+#### 方法
+<table>
+  <tr>
+    <td>
+      clearData()
+    </td>
+    <td>
+      清除value
+    </td>
+    <td>
+      通过ref调用
+    </td>
   </tr>
 </table>

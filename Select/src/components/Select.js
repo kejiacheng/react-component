@@ -19,6 +19,7 @@ var classNames = require("classnames");
 var selectCss = require('./Select.scss');
 var iconfontCss = require('../styles/font/iconfont.scss');
 var inputChangeShouldCB = true;
+var currentValue = null;
 var Select = (function (_super) {
     __extends(Select, _super);
     function Select(props) {
@@ -31,12 +32,13 @@ var Select = (function (_super) {
                 selectedText: ''
             }, function () {
                 me.props.onChange && me.props.onChange('', '');
+                currentValue = null;
                 if (me.props.mode === 'combobox') {
                     targetInput.value = '';
                 }
             });
-            e.stopPropagation();
-            e.nativeEvent.stopImmediatePropagation();
+            e && e.stopPropagation();
+            e && e.nativeEvent.stopImmediatePropagation();
         };
         _this.showOptionWrapper = function (e) {
             var me = _this;
@@ -56,6 +58,8 @@ var Select = (function (_super) {
             me.setState({
                 selectedValue: null,
                 selectedText: text
+            }, function () {
+                currentValue = null;
             });
             if (inputChangeShouldCB) {
                 me.props.onChange && me.props.onChange(null, text);
@@ -77,24 +81,49 @@ var Select = (function (_super) {
             }, function () {
                 me.props.onChange && me.props.onChange(value, text);
                 inputChangeShouldCB = true;
+                currentValue = value;
                 if (me.props.mode === 'combobox') {
                     targetInput.value = me.state.selectedText;
                 }
             });
         };
         var selectedText = '';
+        var value = props.defaultValue || props.value;
         React.Children.forEach(props.children, function (child) {
-            if (child.props.value === props.defaultValue) {
+            if (child.props.value === value) {
                 selectedText = child.props.children;
             }
         });
+        currentValue = value;
         _this.state = {
-            selectedValue: props.defaultValue,
+            selectedValue: value,
             selectedText: selectedText,
             optionWrapperShow: false
         };
         return _this;
     }
+    Select.prototype.componentWillReceiveProps = function (props) {
+        var me = this;
+        if ('value' in props && props.value !== currentValue) {
+            var text_1 = '';
+            React.Children.forEach(props.children, function (child) {
+                if (child.props.value === props.value) {
+                    text_1 = child.props.children;
+                }
+            });
+            me.setState({
+                selectedValue: props.value,
+                selectedText: text_1
+            }, function () {
+                currentValue = props.value;
+                me.props.onChange(props.value, text_1);
+                if (props.mode === 'combobox') {
+                    var targetInput = document.querySelector('.k-select-search-input-dom');
+                    targetInput.value = text_1;
+                }
+            });
+        }
+    };
     Select.prototype.componentDidMount = function () {
         var me = this;
         document.addEventListener('click', function () {

@@ -26,6 +26,7 @@ interface SelectProps {
     children?: React.ReactNode
     clear?: boolean
     inputChange?: (text: string) => any
+    value?: any
 }
 
 interface stateProps {
@@ -35,24 +36,29 @@ interface stateProps {
 }
 
 let inputChangeShouldCB: boolean = true
+let currentValue: any = null
 
 class Select extends React.Component<SelectProps, {}> {
     static Option = Option as React.ClassicComponentClass<OptionProps>
 
     static state: stateProps
-    static clear: () => any
 
     constructor (props: SelectProps) {
         super(props)
         let selectedText: string = ''
+
+        let value = props.defaultValue || props.value
+
         React.Children.forEach(props.children, (child:React.ReactElement<any>) => {
-            if (child.props.value === props.defaultValue) {
+            if (child.props.value === value) {
                 selectedText = child.props.children
             }
         })
 
+        currentValue = value
+   
         this.state = {
-            selectedValue: props.defaultValue,
+            selectedValue: value,
             selectedText,
             optionWrapperShow: false
         }
@@ -69,13 +75,15 @@ class Select extends React.Component<SelectProps, {}> {
             },
             function () {
                 me.props.onChange && me.props.onChange('', '')
+                currentValue = null
                 if (me.props.mode === 'combobox') {
                     targetInput.value = ''
                 }
             }
         )
-        e.stopPropagation()
-        e.nativeEvent.stopImmediatePropagation()
+    
+        e && e.stopPropagation()
+        e && e.nativeEvent.stopImmediatePropagation()
     }
 
     showOptionWrapper = (e: any) => {
@@ -105,6 +113,9 @@ class Select extends React.Component<SelectProps, {}> {
             {
                 selectedValue: null,
                 selectedText: text
+            },
+            function () {
+                currentValue = null
             }
         )
 
@@ -133,11 +144,39 @@ class Select extends React.Component<SelectProps, {}> {
             function () {
                 me.props.onChange && me.props.onChange(value, text)
                 inputChangeShouldCB = true
+                currentValue = value
                 if (me.props.mode === 'combobox') {
                     targetInput.value = me.state.selectedText
                 }
             }
         )
+    }
+
+    componentWillReceiveProps (props: SelectProps) {
+        const me = this
+        
+        if ('value' in props && props.value !== currentValue) {
+            let text = ''
+            React.Children.forEach(props.children, (child:React.ReactElement<any>) => {
+                if (child.props.value === props.value) {
+                    text = child.props.children
+                }
+            })
+            me.setState(
+                {
+                    selectedValue: props.value,
+                    selectedText: text
+                },
+                function () {
+                    currentValue = props.value
+                    me.props.onChange(props.value, text)
+                    if (props.mode === 'combobox') {
+                        const targetInput: HTMLInputElement = document.querySelector('.k-select-search-input-dom')
+                        targetInput.value = text
+                    }
+                }
+            )
+        }
     }
 
     componentDidMount () {
