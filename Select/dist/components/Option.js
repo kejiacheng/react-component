@@ -32,7 +32,7 @@ var React = require("react");
 var classNames = require("classnames");
 require("./Option.scss");
 var optionCss = require('./Option.scss');
-var Option = function (_super) {
+var Option = /** @class */function (_super) {
     __extends(Option, _super);
     function Option() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -46,7 +46,7 @@ var Option = function (_super) {
             isSelected = _a.isSelected,
             optionClick = _a.optionClick,
             optionClassName = _a.optionClassName;
-        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionCss[optionClassName], (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
+        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionClassName, (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
         var _b, _c;
     };
     return Option;

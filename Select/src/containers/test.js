@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Select from "../components/Select";
+let testCss = require('./test.scss')
 let Option = Select.Option
 class componentName extends Component {
     constructor () {
@@ -14,6 +15,7 @@ class componentName extends Component {
         console.log(this.select1)
     }
 
+    
     test = () => {
         console.log(this.select1)
         console.log(this.select1.clearData)
@@ -42,7 +44,7 @@ class componentName extends Component {
                 <Select 
                     style={{width: 200}} 
                     placeholder={321} 
-                    mode="combobox" 
+                    // mode="combobox" 
                     // defaultValue="1"
                     onChange={
                         function (value, text) {
@@ -56,12 +58,24 @@ class componentName extends Component {
                     trigger={function () {console.log(123)}}
                     inputChange={function (text){console.log(text)}}
                     ref={ele => this.select1 = ele}
-                    // value={this.state.value}
+                    value={this.state.value}
                     // defaultValue={"1"}
                 >
-                    <Option value="1" disabled={true}>123</Option>  
-                    <Option value="2" title={"312312"}>134</Option>
-                    <Option value="3">13235</Option> 
+                    <Option value="1" disabled={true}>
+                        <div style={{height: 50, lineHeight: '50px'}}>
+                            dasdas
+                        </div>
+                    </Option>  
+                    <Option value="2" title={"312312"}>
+                        <div style={{height: 30}}>
+                            tetetet
+                        </div>
+                    </Option>
+                    <Option value="3">
+                        <div style={{height: 50, lineHeight: '50px'}}>
+                            dasdas
+                        </div>
+                    </Option> 
                     <Option value="4">1236</Option> 
                     <Option value="5">1237</Option>
                     <Option value="6">1238</Option>

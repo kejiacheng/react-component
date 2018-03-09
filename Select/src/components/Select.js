@@ -20,7 +20,7 @@ var selectCss = require('./Select.scss');
 var iconfontCss = require('../styles/font/iconfont.scss');
 var inputChangeShouldCB = true;
 var currentValue = null;
-var Select = (function (_super) {
+var Select = /** @class */ (function (_super) {
     __extends(Select, _super);
     function Select(props) {
         var _this = _super.call(this, props) || this;
@@ -135,7 +135,7 @@ var Select = (function (_super) {
     Select.prototype.render = function () {
         var me = this;
         var _a = me.props, style = _a.style, children = _a.children, placeholder = _a.placeholder, mode = _a.mode, defaultValue = _a.defaultValue, clear = _a.clear, selectClassName = _a.selectClassName, optionClassName = _a.optionClassName;
-        return React.createElement("div", { className: classNames(selectCss['k-select'], selectCss[selectClassName], (_b = {}, _b[selectCss['k-select-active']] = me.state.optionWrapperShow, _b)), style: style },
+        return React.createElement("div", { className: classNames(selectCss['k-select'], selectClassName, (_b = {}, _b[selectCss['k-select-active']] = me.state.optionWrapperShow, _b)), style: style },
             React.createElement("div", { className: classNames(selectCss['k-select-show-selected-area']), onClick: this.showOptionWrapper },
                 placeholder
                     ? React.createElement("div", { className: selectCss["k-select-placeholder"], style: me.state.selectedText === ''
@@ -150,10 +150,15 @@ var Select = (function (_super) {
                             : {} }, "\uE63D")
                     : null,
                 mode === undefined || mode === 'default'
-                    ? [
-                        React.createElement("div", { className: selectCss["k-select-selected-value"], key: "text" }, me.state.selectedText),
-                        React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")
-                    ]
+                    ? me.state.selectedText.$$typeof === Symbol.for('react.element')
+                        ? [
+                            React.createElement("div", { className: selectCss["k-select-selected-reactnode-value"], key: "text" }, me.state.selectedText),
+                            React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")
+                        ]
+                        : [
+                            React.createElement("div", { className: selectCss["k-select-selected-value"], key: "text" }, me.state.selectedText),
+                            React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")
+                        ]
                     : null,
                 mode === 'combobox'
                     ? React.createElement("div", { className: selectCss["k-select-search"] },
@@ -169,6 +174,9 @@ var Select = (function (_super) {
                     isSelected = true;
                 }
                 if (mode === 'combobox') {
+                    if (child.props.children.$$typeof === Symbol.for('react.element')) {
+                        throw ('在使用combobox时，不得使用reactnode');
+                    }
                     if (child.props.children.indexOf(me.state.selectedText) === -1) {
                         return '';
                     }

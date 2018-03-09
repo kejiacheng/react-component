@@ -22,7 +22,7 @@ export default class Option extends React.Component<OptionProps, {}> {
                     className={classNames(
                         optionCss['k-option'],
                         {[optionCss['k-option-selected']]: isSelected},
-                        optionCss[optionClassName],
+                        optionClassName,
                         {[optionCss['k-option-disabled']]: disabled}
                     )}
                     onClick={optionClick.bind(null, value, children, disabled)}

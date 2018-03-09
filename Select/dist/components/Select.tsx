@@ -194,11 +194,11 @@ class Select extends React.Component<SelectProps, {}> {
     render() {
         const me = this
         const { style, children, placeholder, mode, defaultValue, clear, selectClassName, optionClassName } = me.props
-         
+    
         return  <div 
                     className={classNames(
                         selectCss['k-select'],
-                        selectCss[selectClassName],
+                        selectClassName,
                         {[selectCss['k-select-active']]: me.state.optionWrapperShow}
                     )}
                     style={style}
@@ -244,19 +244,33 @@ class Select extends React.Component<SelectProps, {}> {
                         }
                         {
                             mode === undefined || mode === 'default'
-                                ?   [
-                                        <div className={selectCss["k-select-selected-value"]} key="text">
-                                            {
-                                                me.state.selectedText
-                                            }
-                                        </div>,
-                                        <i className={
-                                            classNames(
-                                                iconfontCss['k-select-iconfont'],
-                                                selectCss['k-select-arrow']
-                                            )
-                                        } key="icon">&#xe726;</i>
-                                    ]
+                                ?   me.state.selectedText.$$typeof === Symbol.for('react.element')
+                                        ?   [
+                                                <div className={selectCss["k-select-selected-reactnode-value"]} key="text">
+                                                    {
+                                                        me.state.selectedText
+                                                    }
+                                                </div>,
+                                                <i className={
+                                                    classNames(
+                                                        iconfontCss['k-select-iconfont'],
+                                                        selectCss['k-select-arrow']
+                                                    )
+                                                } key="icon">&#xe726;</i>
+                                            ]
+                                        :   [
+                                                <div className={selectCss["k-select-selected-value"]} key="text">
+                                                    {
+                                                        me.state.selectedText
+                                                    }
+                                                </div>,
+                                                <i className={
+                                                    classNames(
+                                                        iconfontCss['k-select-iconfont'],
+                                                        selectCss['k-select-arrow']
+                                                    )
+                                                } key="icon">&#xe726;</i>
+                                            ]   
                                 :   null
                         }
                         {
@@ -288,6 +302,9 @@ class Select extends React.Component<SelectProps, {}> {
                                 }
                               
                                 if (mode === 'combobox') {
+                                    if (child.props.children.$$typeof === Symbol.for('react.element')) {
+                                        throw('在使用combobox时，不得使用reactnode')
+                                    }
                                     if (child.props.children.indexOf(me.state.selectedText) === -1) {
                                         return ''
                                     }

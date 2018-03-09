@@ -13,7 +13,7 @@
   </tr>
   <tr>
     <td>style</td>
-    <td>用户自定义样式,width基本为必设样式</td>
+    <td>用户自定义样式,width基本为必设样式;当option使用reactnode时，应注意height的设置</td>
     <td>object</td>
     <td>-</td>
   </tr>
@@ -43,7 +43,7 @@
   </tr>
   <tr>
     <td>mode</td>
-    <td>选择框样式 （目前2种：1种为基本款，另一种支持搜索）</td>
+    <td>选择框样式 （目前2种：1种为基本款，另一种支持搜索）;使用combobox时，option的子元素不支持reactnode</td>
     <td>'default' | 'combobox'</td>
     <td>基本款</td>
   </tr>
@@ -103,7 +103,7 @@
   </tr>
   <tr>
     <td>value</td>
-    <td>选项的value</td>
+    <td>选项的value;当使用reactnode时，不支持combobox</td>
     <td>any</td>
     <td>-</td>
   </tr>

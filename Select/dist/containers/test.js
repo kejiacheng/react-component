@@ -34,6 +34,7 @@ var _Select2 = _interopRequireDefault(_Select);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var testCss = require('./test.scss');
 var Option = _Select2.default.Option;
 
 var componentName = function (_Component) {
@@ -85,8 +86,8 @@ var componentName = function (_Component) {
                     _Select2.default,
                     {
                         style: { width: 200 },
-                        placeholder: 321,
-                        mode: 'combobox'
+                        placeholder: 321
+                        // mode="combobox" 
                         // defaultValue="1"
                         , onChange: function onChange(value, text) {
                             console.log(value);
@@ -103,24 +104,36 @@ var componentName = function (_Component) {
                         },
                         ref: function ref(ele) {
                             return _this2.select1 = ele;
-                        }
-                        // value={this.state.value}
+                        },
+                        value: this.state.value
                         // defaultValue={"1"}
                     },
                     _react2.default.createElement(
                         Option,
                         { value: '1', disabled: true },
-                        '123'
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 50, lineHeight: '50px' } },
+                            'dasdas'
+                        )
                     ),
                     _react2.default.createElement(
                         Option,
                         { value: '2', title: "312312" },
-                        '134'
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 30 } },
+                            'tetetet'
+                        )
                     ),
                     _react2.default.createElement(
                         Option,
                         { value: '3' },
-                        '13235'
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 50, lineHeight: '50px' } },
+                            'dasdas'
+                        )
                     ),
                     _react2.default.createElement(
                         Option,

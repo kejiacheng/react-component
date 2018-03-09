@@ -1,5 +1,9 @@
 "use strict";
 
+var _for = require("babel-runtime/core-js/symbol/for");
+
+var _for2 = _interopRequireDefault(_for);
+
 var _create = require("babel-runtime/core-js/object/create");
 
 var _create2 = _interopRequireDefault(_create);
@@ -37,7 +41,7 @@ var selectCss = require('./Select.scss');
 var iconfontCss = require('../styles/font/iconfont.scss');
 var inputChangeShouldCB = true;
 var currentValue = null;
-var Select = function (_super) {
+var Select = /** @class */function (_super) {
     __extends(Select, _super);
     function Select(props) {
         var _this = _super.call(this, props) || this;
@@ -160,9 +164,9 @@ var Select = function (_super) {
             clear = _a.clear,
             selectClassName = _a.selectClassName,
             optionClassName = _a.optionClassName;
-        return React.createElement("div", { className: classNames(selectCss['k-select'], selectCss[selectClassName], (_b = {}, _b[selectCss['k-select-active']] = me.state.optionWrapperShow, _b)), style: style }, React.createElement("div", { className: classNames(selectCss['k-select-show-selected-area']), onClick: this.showOptionWrapper }, placeholder ? React.createElement("div", { className: selectCss["k-select-placeholder"], style: me.state.selectedText === '' ? {} : {
+        return React.createElement("div", { className: classNames(selectCss['k-select'], selectClassName, (_b = {}, _b[selectCss['k-select-active']] = me.state.optionWrapperShow, _b)), style: style }, React.createElement("div", { className: classNames(selectCss['k-select-show-selected-area']), onClick: this.showOptionWrapper }, placeholder ? React.createElement("div", { className: selectCss["k-select-placeholder"], style: me.state.selectedText === '' ? {} : {
                 display: 'none'
-            } }, placeholder) : null, clear ? React.createElement("i", { className: iconfontCss["k-select-iconfont"] + " " + selectCss["k-select-clear"], onClick: me.clearData, style: mode === 'combobox' ? { right: 8 } : {} }, "\uE63D") : null, mode === undefined || mode === 'default' ? [React.createElement("div", { className: selectCss["k-select-selected-value"], key: "text" }, me.state.selectedText), React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")] : null, mode === 'combobox' ? React.createElement("div", { className: selectCss["k-select-search"] }, React.createElement("input", { className: selectCss["k-select-search-input"] + " k-select-search-input-dom", type: "text", defaultValue: me.state.selectedText, onChange: me.inputChangeEvent })) : null), React.createElement("ul", { className: selectCss["k-select-option-wrapper"], style: me.state.optionWrapperShow ? {} : {
+            } }, placeholder) : null, clear ? React.createElement("i", { className: iconfontCss["k-select-iconfont"] + " " + selectCss["k-select-clear"], onClick: me.clearData, style: mode === 'combobox' ? { right: 8 } : {} }, "\uE63D") : null, mode === undefined || mode === 'default' ? me.state.selectedText.$$typeof === (0, _for2.default)('react.element') ? [React.createElement("div", { className: selectCss["k-select-selected-reactnode-value"], key: "text" }, me.state.selectedText), React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")] : [React.createElement("div", { className: selectCss["k-select-selected-value"], key: "text" }, me.state.selectedText), React.createElement("i", { className: classNames(iconfontCss['k-select-iconfont'], selectCss['k-select-arrow']), key: "icon" }, "\uE726")] : null, mode === 'combobox' ? React.createElement("div", { className: selectCss["k-select-search"] }, React.createElement("input", { className: selectCss["k-select-search-input"] + " k-select-search-input-dom", type: "text", defaultValue: me.state.selectedText, onChange: me.inputChangeEvent })) : null), React.createElement("ul", { className: selectCss["k-select-option-wrapper"], style: me.state.optionWrapperShow ? {} : {
                 display: 'none'
             } }, React.Children.map(children, function (child) {
             var isSelected = false;
@@ -170,6 +174,9 @@ var Select = function (_super) {
                 isSelected = true;
             }
             if (mode === 'combobox') {
+                if (child.props.children.$$typeof === (0, _for2.default)('react.element')) {
+                    throw '在使用combobox时，不得使用reactnode';
+                }
                 if (child.props.children.indexOf(me.state.selectedText) === -1) {
                     return '';
                 }

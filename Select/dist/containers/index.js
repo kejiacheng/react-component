@@ -28,7 +28,7 @@ var __extends = undefined && undefined.__extends || function () {
 }();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var index = function (_super) {
+var index = /** @class */function (_super) {
     __extends(index, _super);
     function index() {
         return _super !== null && _super.apply(this, arguments) || this;
