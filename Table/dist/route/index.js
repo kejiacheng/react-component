@@ -34,6 +34,10 @@ var _test = require('../containers/test');
 
 var _test2 = _interopRequireDefault(_test);
 
+var _combine = require('../containers/combine');
+
+var _combine2 = _interopRequireDefault(_combine);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function () {
@@ -48,7 +52,8 @@ exports.default = function () {
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/filter', component: _filter2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/drag', component: _drag2.default }),
             _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/pagination', component: _pagination2.default }),
-            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/test', component: _test2.default })
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/test', component: _test2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/combine', component: _combine2.default })
         )
     );
 };

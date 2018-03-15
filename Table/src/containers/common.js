@@ -51,7 +51,20 @@ export default class common extends Component {
         }
     }
 
+    delete = (index) => {
+        const me = this
+        let arr = me.state.dataSource
+        arr.splice(index, 1)
+        console.log(arr)
+        me.setState(
+            {
+                dataSource: arr
+            }
+        )
+    }
+
     render () {
+        const me = this
         let columns = [
             {
             title: 'name',
@@ -100,6 +113,9 @@ export default class common extends Component {
             dataIndex: 'wallet.money',
             key: 'money',
             width: '500px',
+            render (data, record, index) {
+                return <span data-index="index" onClick={me.delete.bind(null, index)}>删除</span>
+            }
             }
         ]
 
@@ -118,7 +134,7 @@ export default class common extends Component {
                     onLeftOneClick={function (data, index) {console.log(data, index)}}
                     // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
                     // scroll={{x: '100%', y: '100px', minX: '1200px', minY: '70px'}}
-                    scroll={{x: '1200px', y: '100px'}}
+                    // scroll={{x: '1200px', y: '100px'}}
                 />
             </div>
         )

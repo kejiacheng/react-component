@@ -8,13 +8,13 @@ var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
 var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
-var _is = require('babel-runtime/core-js/object/is');
-
-var _is2 = _interopRequireDefault(_is);
-
 var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
+
+var _is = require('babel-runtime/core-js/object/is');
+
+var _is2 = _interopRequireDefault(_is);
 
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
@@ -60,6 +60,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 * currentX 鼠标在x的位置
 * currentY 鼠标在y的位置
 * placeholderTr 占位空白tr
+* prevIndex 移动前的索引
 * */
 var params = {
     canMove: false,
@@ -105,31 +106,7 @@ var Tbody = function (_Component) {
                         return key[value];
                     }, it);
 
-                    tdArr.push(obj.render && _react2.default.createElement(
-                        'td',
-                        {
-                            style: (0, _assign2.default)({
-                                'width': obj.width || 'auto',
-                                borderTop: '' + (thead || index !== 0 ? '' : '1px solid #e9e9e9')
-                            }, obj.tdStyle),
-                            key: obj.key + '' + tdIndex
-                        },
-                        obj.render(val, it, index)
-                    ) || _react2.default.createElement(
-                        'td',
-                        {
-                            style: (0, _assign2.default)({
-                                'width': obj.width || 'auto',
-                                borderTop: '' + (thead || index !== 0 ? '' : '1px solid #e9e9e9')
-                            }, obj.tdStyle),
-                            key: obj.key + '' + tdIndex
-                        },
-                        _react2.default.createElement(
-                            'span',
-                            null,
-                            val
-                        )
-                    ));
+                    tdArr = me.renderTd(tdArr, obj, val, it, index, thead, tdIndex);
                 });
 
                 trArr.push(_react2.default.createElement(
@@ -150,6 +127,61 @@ var Tbody = function (_Component) {
             });
 
             return trArr;
+        };
+
+        _this.renderTd = function (tdArr, obj, val, it, index, thead, tdIndex) {
+            var me = _this;
+            var returnVal = obj.render && obj.render(val, it, index);
+
+            if (obj.render) {
+                if ((0, _is2.default)((0, _utils.typeInspect)(returnVal), '[object Object]') && ((0, _is2.default)((0, _utils.typeInspect)(returnVal.rowSpan), '[object Number]') || (0, _is2.default)((0, _utils.typeInspect)(returnVal.colSpan), '[object Number]'))) {
+                    if (!((0, _is2.default)(returnVal.rowSpan, 0) || (0, _is2.default)(returnVal.colSpan, 0))) {
+                        tdArr.push(_react2.default.createElement(
+                            'td',
+                            {
+                                style: (0, _assign2.default)({
+                                    'width': obj.width || 'auto',
+                                    borderTop: '' + (thead || index !== 0 ? '' : '1px solid #e9e9e9')
+                                }, obj.tdStyle),
+                                key: obj.key + '' + tdIndex,
+                                rowSpan: returnVal.rowSpan,
+                                colSpan: returnVal.colSpan
+                            },
+                            returnVal.children
+                        ));
+                    }
+                } else {
+                    tdArr.push(_react2.default.createElement(
+                        'td',
+                        {
+                            style: (0, _assign2.default)({
+                                'width': obj.width || 'auto',
+                                borderTop: '' + (thead || index !== 0 ? '' : '1px solid #e9e9e9')
+                            }, obj.tdStyle),
+                            key: obj.key + '' + tdIndex
+                        },
+                        returnVal
+                    ));
+                }
+            } else {
+                tdArr.push(_react2.default.createElement(
+                    'td',
+                    {
+                        style: (0, _assign2.default)({
+                            'width': obj.width || 'auto',
+                            borderTop: '' + (thead || index !== 0 ? '' : '1px solid #e9e9e9')
+                        }, obj.tdStyle),
+                        key: obj.key + '' + tdIndex
+                    },
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        val
+                    )
+                ));
+            }
+
+            return tdArr;
         };
 
         _this.trMouseEnter = function (data, index, e) {

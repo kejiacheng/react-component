@@ -8,6 +8,7 @@ exports.siblings = siblings;
 exports.hasClass = hasClass;
 exports.addClass = addClass;
 exports.removeClass = removeClass;
+exports.typeInspect = typeInspect;
 
 var scrollbarSize = void 0;
 
@@ -82,4 +83,8 @@ function removeClass(obj, cls) {
     var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
     obj.className = obj.className.replace(reg, ' ');
   }
+}
+
+function typeInspect(variable) {
+  return Object.prototype.toString.call(variable);
 }

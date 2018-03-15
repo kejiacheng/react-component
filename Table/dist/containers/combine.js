@@ -47,7 +47,7 @@ var dataSource = [{
 }, {
     name: 'allen',
     age: '12',
-    sex: 'man',
+    sex: 'woman',
     address: 'hangzhou',
     wallet: {
         money: 600
@@ -105,7 +105,19 @@ var common = function (_Component) {
                 key: 'name',
                 width: '200px',
                 render: function render(data, record, index) {
-                    return data;
+                    if (index === 2) {
+                        return {
+                            children: data,
+                            rowSpan: 2
+                        };
+                    } else if (index === 3) {
+                        return {
+                            children: data,
+                            rowSpan: 0
+                        };
+                    } else {
+                        return data;
+                    }
                 }
             }, {
                 title: 'age',
@@ -121,7 +133,24 @@ var common = function (_Component) {
                 key: 'sex',
                 width: '700px',
                 render: function render(data, record, index) {
-                    return data;
+                    if (index === 1) {
+                        return {
+                            children: data,
+                            rowSpan: 2
+                        };
+                    } else if (index === 2) {
+                        return {
+                            children: data,
+                            rowSpan: 0
+                        };
+                    } else if (index === 3) {
+                        return {
+                            children: data,
+                            colSpan: 2
+                        };
+                    } else {
+                        return data;
+                    }
                 }
             }, {
                 title: 'address',
@@ -129,14 +158,14 @@ var common = function (_Component) {
                 key: 'address',
                 width: '500px',
                 render: function render(data, record, index) {
-                    return data;
-                },
-
-                thStyle: {
-                    borderColor: 'red'
-                },
-                tdStyle: {
-                    borderColor: 'green'
+                    if (index === 3) {
+                        return {
+                            children: data,
+                            colSpan: 0
+                        };
+                    } else {
+                        return data;
+                    }
                 }
             }, {
                 title: 'money',
@@ -160,16 +189,6 @@ var common = function (_Component) {
                     bordered: true,
                     columns: columns,
                     dataSource: this.state.dataSource,
-                    header: _react2.default.createElement(
-                        'div',
-                        null,
-                        '213'
-                    ),
-                    footer: _react2.default.createElement(
-                        'div',
-                        { style: { 'textAlign': 'center' } },
-                        '456'
-                    ),
                     loading: true,
                     onRowMouseEnter: function onRowMouseEnter(data, index) {
                         console.log(data, index);
@@ -180,9 +199,6 @@ var common = function (_Component) {
                     onLeftOneClick: function onLeftOneClick(data, index) {
                         console.log(data, index);
                     }
-                    // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
-                    // scroll={{x: '100%', y: '100px', minX: '1200px', minY: '70px'}}
-                    // scroll={{x: '1200px', y: '100px'}}
                 })
             );
         }

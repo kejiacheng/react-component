@@ -18,6 +18,7 @@ export default class drag extends Component {
                 <p style={{marginTop: '10px'}}><Link to="./drag">drag</Link></p>
                 <p style={{marginTop: '10px'}}><Link to="./filter">filter</Link></p>
                 <p style={{marginTop: '10px'}}><Link to="./pagination">pagination</Link></p>
+                <p style={{marginTop: '10px'}}><Link to="./combine">combine</Link></p>
             </div>
         )
     }

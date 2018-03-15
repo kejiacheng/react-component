@@ -72,3 +72,7 @@ export function removeClass(obj, cls) {
 	    obj.className = obj.className.replace(reg, ' ');  
 	}  
 }
+
+export function typeInspect(variable) {
+  return Object.prototype.toString.call(variable)
+}

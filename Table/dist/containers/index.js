@@ -88,6 +88,15 @@ var drag = function (_Component) {
                         { to: './pagination' },
                         'pagination'
                     )
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { style: { marginTop: '10px' } },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: './combine' },
+                        'combine'
+                    )
                 )
             );
         }

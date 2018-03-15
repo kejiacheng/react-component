@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
 import tableCss from './Table.scss'
-import { siblings, hasClass, addClass, removeClass } from './utils'
+import { siblings, hasClass, addClass, removeClass, typeInspect } from './utils'
 
 /*
 * canMove 能否移动
@@ -11,6 +11,7 @@ import { siblings, hasClass, addClass, removeClass } from './utils'
 * currentX 鼠标在x的位置
 * currentY 鼠标在y的位置
 * placeholderTr 占位空白tr
+* prevIndex 移动前的索引
 * */
 let params = {
     canMove: false,
@@ -55,39 +56,7 @@ class Tbody extends Component {
                     return key[value]
                 }, it)
              
-                tdArr.push(
-                    obj.render &&
-                    <td 
-                        style={
-                            Object.assign(
-                                {
-                                    'width': obj.width || 'auto', 
-                                    borderTop: `${(thead || index !== 0) ? '' : '1px solid #e9e9e9'}` 
-                                }, 
-                                obj.tdStyle
-                            )
-                        } 
-                        key={obj.key + '' + tdIndex}
-                    >
-                        {
-                            obj.render(val, it, index)
-                        }
-                    </td> ||
-                    <td 
-                        style={
-                            Object.assign(
-                                {
-                                    'width': obj.width || 'auto', 
-                                    borderTop: `${(thead || index !== 0) ? '' : '1px solid #e9e9e9'}` 
-                                }, 
-                                obj.tdStyle
-                            )
-                        } 
-                        key={obj.key + '' + tdIndex}
-                    >
-                        <span>{val}</span>
-                    </td>
-                )
+                tdArr = me.renderTd(tdArr, obj, val, it, index, thead, tdIndex)
             })
 
             trArr.push(
@@ -110,6 +79,79 @@ class Tbody extends Component {
         })
 
         return trArr
+    }
+
+    renderTd = (tdArr, obj, val, it, index, thead, tdIndex) => {
+        const me = this
+        const returnVal = obj.render && obj.render(val, it, index)
+
+        if (obj.render) {
+            if (Object.is(typeInspect(returnVal), '[object Object]') 
+                && (Object.is(typeInspect(returnVal.rowSpan), '[object Number]') 
+                || Object.is(typeInspect(returnVal.colSpan), '[object Number]'))
+            ) {
+                if (!(Object.is(returnVal.rowSpan, 0) || Object.is(returnVal.colSpan, 0))) {
+                    tdArr.push(
+                        <td 
+                            style={
+                                Object.assign(
+                                    {
+                                        'width': obj.width || 'auto', 
+                                        borderTop: `${(thead || index !== 0) ? '' : '1px solid #e9e9e9'}` 
+                                    }, 
+                                    obj.tdStyle
+                                )
+                            }
+                            key={obj.key + '' + tdIndex}
+                            rowSpan={returnVal.rowSpan}
+                            colSpan={returnVal.colSpan}
+                        >
+                            {
+                                returnVal.children
+                            }
+                        </td>
+                    )
+                }
+            } else {
+                tdArr.push(
+                    <td 
+                        style={
+                            Object.assign(
+                                {
+                                    'width': obj.width || 'auto', 
+                                    borderTop: `${(thead || index !== 0) ? '' : '1px solid #e9e9e9'}` 
+                                }, 
+                                obj.tdStyle
+                            )
+                        } 
+                        key={obj.key + '' + tdIndex}
+                    >
+                        {
+                            returnVal
+                        }
+                    </td>
+                )
+            }
+        } else {
+            tdArr.push(
+                <td 
+                    style={
+                        Object.assign(
+                            {
+                                'width': obj.width || 'auto', 
+                                borderTop: `${(thead || index !== 0) ? '' : '1px solid #e9e9e9'}` 
+                            }, 
+                            obj.tdStyle
+                        )
+                    } 
+                    key={obj.key + '' + tdIndex}
+                >
+                    <span>{val}</span>
+                </td>
+            )
+        }
+
+        return tdArr
     }
 
     trMouseEnter = (data, index, e) => {
