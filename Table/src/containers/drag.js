@@ -4,7 +4,7 @@ import Table from '../components/Table/Table'
 let dataSource = [
     {
     name: 'joke',
-    age: '10',
+    age: '1',
     sex: 'man',
     address: 'jinhua',
     wallet: {
@@ -13,7 +13,7 @@ let dataSource = [
     },
     {
     name: 'allen',
-    age: '12',
+    age: '2',
     sex: 'man',
     address: 'hangzhou',
     wallet: {
@@ -22,7 +22,7 @@ let dataSource = [
     },
     {
     name: 'linda',
-    age: '1',
+    age: '3',
     sex: 'woman',
     address: 'wenzhou',
     wallet: {
@@ -31,7 +31,7 @@ let dataSource = [
     },
     {
     name: 'bob',
-    age: '15',
+    age: '4',
     sex: 'man',
     address: 'ningbo',
     wallet: {
@@ -79,7 +79,14 @@ export default class drag extends Component {
             key: 'name',
             width: '200px',
             render (data, record, index) {
-                return data
+                if (record.age === '2') {
+                     return <div>
+                    <p>31231</p>
+                    <p>543</p>
+                </div>
+                }else {
+                    return data
+                }
             }
             },
             {

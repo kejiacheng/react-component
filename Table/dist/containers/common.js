@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -119,7 +123,7 @@ var common = function (_Component) {
                 title: 'sex',
                 dataIndex: 'sex',
                 key: 'sex',
-                width: '700px',
+                width: '100px',
                 render: function render(data, record, index) {
                     return data;
                 }
@@ -152,10 +156,15 @@ var common = function (_Component) {
                 }
             }];
 
+            var params = true ? {
+                scroll: { x: '1500px' },
+                bordered: false
+            } : {};
+
             return _react2.default.createElement(
                 'div',
                 { style: { width: '800px', margin: '100px auto', height: '300px' } },
-                _react2.default.createElement(_Table2.default, {
+                _react2.default.createElement(_Table2.default, (0, _extends3.default)({
                     className: 'just-test',
                     bordered: true,
                     columns: columns,
@@ -182,8 +191,8 @@ var common = function (_Component) {
                     }
                     // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
                     // scroll={{x: '100%', y: '100px', minX: '1200px', minY: '70px'}}
-                    // scroll={{x: '1200px', y: '100px'}}
-                })
+                    // scroll={{}}
+                }, params))
             );
         }
     }]);

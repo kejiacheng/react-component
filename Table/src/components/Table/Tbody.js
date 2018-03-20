@@ -283,13 +283,13 @@ class Tbody extends Component {
         if (prevIndex < laterIndex) {
             laterIndex--
         }
-   
+     
         !changedDataSource && (changedDataSource = [...me.props.dataSource])
         //根据移动前后的index排序dataSource
-        let deleteArr = changedDataSource.splice(+prevIndex, 1)
+        let deleteArr = changedDataSource.splice(+prevIndex - 1, 1)
     
-        changedDataSource.splice(+laterIndex, 0, deleteArr[0])
-   
+        changedDataSource.splice(+laterIndex - 1, 0, deleteArr[0])
+       
         me.setState(
             {
                 dataSource: changedDataSource

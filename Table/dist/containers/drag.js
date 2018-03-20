@@ -36,7 +36,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var dataSource = [{
     name: 'joke',
-    age: '10',
+    age: '1',
     sex: 'man',
     address: 'jinhua',
     wallet: {
@@ -44,7 +44,7 @@ var dataSource = [{
     }
 }, {
     name: 'allen',
-    age: '12',
+    age: '2',
     sex: 'man',
     address: 'hangzhou',
     wallet: {
@@ -52,7 +52,7 @@ var dataSource = [{
     }
 }, {
     name: 'linda',
-    age: '1',
+    age: '3',
     sex: 'woman',
     address: 'wenzhou',
     wallet: {
@@ -60,7 +60,7 @@ var dataSource = [{
     }
 }, {
     name: 'bob',
-    age: '15',
+    age: '4',
     sex: 'man',
     address: 'ningbo',
     wallet: {
@@ -109,7 +109,24 @@ var drag = function (_Component) {
                 key: 'name',
                 width: '200px',
                 render: function render(data, record, index) {
-                    return data;
+                    if (record.age === '2') {
+                        return _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'p',
+                                null,
+                                '31231'
+                            ),
+                            _react2.default.createElement(
+                                'p',
+                                null,
+                                '543'
+                            )
+                        );
+                    } else {
+                        return data;
+                    }
                 }
             }, {
                 title: 'age',

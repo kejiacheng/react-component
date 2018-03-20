@@ -88,7 +88,7 @@ export default class common extends Component {
             title: 'sex',
             dataIndex: 'sex',
             key: 'sex',
-            width: '700px',
+            width: '100px',
             render (data, record, index) {
                 return data
             }
@@ -119,6 +119,11 @@ export default class common extends Component {
             }
         ]
 
+        let params = true ? {
+            scroll: {x: '1500px'},
+            bordered: false
+        } : {}
+
         return (
             <div style={{width: '800px', margin: '100px auto', height: '300px'}}>
                 <Table 
@@ -134,7 +139,8 @@ export default class common extends Component {
                     onLeftOneClick={function (data, index) {console.log(data, index)}}
                     // color={{theadColor: 'blue', hoverColor: 'red', clickColor: 'green'}}
                     // scroll={{x: '100%', y: '100px', minX: '1200px', minY: '70px'}}
-                    // scroll={{x: '1200px', y: '100px'}}
+                    // scroll={{}}
+                    {...params}
                 />
             </div>
         )

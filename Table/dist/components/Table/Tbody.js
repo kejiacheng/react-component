@@ -316,9 +316,9 @@ var Tbody = function (_Component) {
 
             !changedDataSource && (changedDataSource = [].concat((0, _toConsumableArray3.default)(me.props.dataSource)));
             //根据移动前后的index排序dataSource
-            var deleteArr = changedDataSource.splice(+prevIndex, 1);
+            var deleteArr = changedDataSource.splice(+prevIndex - 1, 1);
 
-            changedDataSource.splice(+laterIndex, 0, deleteArr[0]);
+            changedDataSource.splice(+laterIndex - 1, 0, deleteArr[0]);
 
             me.setState({
                 dataSource: changedDataSource
