@@ -11,12 +11,13 @@ interface OptionProps {
     title?: string
     isSelected?: string
     optionClick?: (value: any, text: string) => void
+    optionMouseDown?: () => void
     optionClassName?: string
 }
 
 export default class Option extends React.Component<OptionProps, {}> {
     render() {
-        const { value, disabled, title, children, isSelected, optionClick, optionClassName } = this.props
+        const { value, disabled, title, children, isSelected, optionClick, optionMouseDown, optionClassName } = this.props
      
         return  <li 
                     className={classNames(
@@ -25,6 +26,7 @@ export default class Option extends React.Component<OptionProps, {}> {
                         optionClassName,
                         {[optionCss['k-option-disabled']]: disabled}
                     )}
+                    onMouseDown={optionMouseDown}
                     onClick={optionClick.bind(null, value, children, disabled)}
                     title={title}
                     key={value}

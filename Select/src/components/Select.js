@@ -24,6 +24,7 @@ var Select = /** @class */ (function (_super) {
     __extends(Select, _super);
     function Select(props) {
         var _this = _super.call(this, props) || this;
+        _this.isOptionTarget = false;
         _this.clearData = function (e) {
             var me = _this;
             var targetInput = document.querySelector('.k-select-search-input-dom');
@@ -50,6 +51,14 @@ var Select = /** @class */ (function (_super) {
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
         };
+        _this.hideOptionWrapper = function (e) {
+            var me = _this;
+            if (!me.isOptionTarget) {
+                me.setState({
+                    optionWrapperShow: false
+                });
+            }
+        };
         _this.inputChangeEvent = function (e) {
             var me = _this;
             var inputChange = me.props.inputChange;
@@ -64,6 +73,11 @@ var Select = /** @class */ (function (_super) {
             if (inputChangeShouldCB) {
                 me.props.onChange && me.props.onChange(null, text);
                 inputChangeShouldCB = false;
+            }
+        };
+        _this.optionMouseDown = function (e) {
+            if (e.button === 0) {
+                _this.isOptionTarget = true;
             }
         };
         _this.optionClick = function (value, text, disabled, e) {
@@ -82,6 +96,7 @@ var Select = /** @class */ (function (_super) {
                 me.props.onChange && me.props.onChange(value, text);
                 inputChangeShouldCB = true;
                 currentValue = value;
+                me.isOptionTarget = false;
                 if (me.props.mode === 'combobox') {
                     targetInput.value = me.state.selectedText;
                 }
@@ -126,17 +141,14 @@ var Select = /** @class */ (function (_super) {
     };
     Select.prototype.componentDidMount = function () {
         var me = this;
-        document.addEventListener('click', function () {
-            me.setState({
-                optionWrapperShow: false
-            });
-        });
     };
     Select.prototype.render = function () {
         var me = this;
         var _a = me.props, style = _a.style, children = _a.children, placeholder = _a.placeholder, mode = _a.mode, defaultValue = _a.defaultValue, clear = _a.clear, selectClassName = _a.selectClassName, optionClassName = _a.optionClassName;
         return React.createElement("div", { className: classNames(selectCss['k-select'], selectClassName, (_b = {}, _b[selectCss['k-select-active']] = me.state.optionWrapperShow, _b)), style: style },
-            React.createElement("div", { className: classNames(selectCss['k-select-show-selected-area']), onClick: this.showOptionWrapper },
+            React.createElement("div", { className: classNames(selectCss['k-select-show-selected-area']), 
+                // onClick={this.showOptionWrapper.bind(null, 'xixi')}
+                onFocus: this.showOptionWrapper, onBlur: this.hideOptionWrapper, tabIndex: -1 },
                 placeholder
                     ? React.createElement("div", { className: selectCss["k-select-placeholder"], style: me.state.selectedText === ''
                             ? {}
@@ -184,6 +196,7 @@ var Select = /** @class */ (function (_super) {
                 return React.cloneElement(child, {
                     isSelected: isSelected,
                     optionClick: me.optionClick,
+                    optionMouseDown: me.optionMouseDown,
                     optionClassName: optionClassName
                 });
             })));

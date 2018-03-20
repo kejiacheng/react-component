@@ -41,7 +41,9 @@ let currentValue: any = null
 class Select extends React.Component<SelectProps, {}> {
     static Option = Option as React.ClassicComponentClass<OptionProps>
 
-    static state: stateProps
+    state: stateProps
+    blurTimer: any
+    isOptionTarget: boolean = false
 
     constructor (props: SelectProps) {
         super(props)
@@ -89,7 +91,7 @@ class Select extends React.Component<SelectProps, {}> {
     showOptionWrapper = (e: any) => {
         const me = this
         const { trigger } = me.props
-        
+
         trigger && trigger()
 
         me.setState(
@@ -100,6 +102,18 @@ class Select extends React.Component<SelectProps, {}> {
 
         e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation()
+    }
+
+    hideOptionWrapper = (e: any) => {
+        const me = this
+
+        if (!me.isOptionTarget) {
+            me.setState(
+                {
+                    optionWrapperShow: false
+                }
+            )
+        }
     }
 
     inputChangeEvent = (e: any) => {
@@ -125,6 +139,13 @@ class Select extends React.Component<SelectProps, {}> {
         }
     }
 
+    optionMouseDown = (e: any): void => {
+        if (e.button === 0) {
+            this.isOptionTarget = true
+        }
+       
+    }
+
     optionClick = (value: any, text: string, disabled: boolean, e: any): void => {
         if (disabled) {
             e.stopPropagation()
@@ -145,6 +166,7 @@ class Select extends React.Component<SelectProps, {}> {
                 me.props.onChange && me.props.onChange(value, text)
                 inputChangeShouldCB = true
                 currentValue = value
+                me.isOptionTarget = false
                 if (me.props.mode === 'combobox') {
                     targetInput.value = me.state.selectedText
                 }
@@ -181,14 +203,6 @@ class Select extends React.Component<SelectProps, {}> {
 
     componentDidMount () {
         const me = this
-
-        document.addEventListener('click', function () {
-            me.setState(
-                {
-                    optionWrapperShow: false
-                }
-            )
-        })
     }
 
     render() {
@@ -207,7 +221,10 @@ class Select extends React.Component<SelectProps, {}> {
                         className={classNames(
                             selectCss['k-select-show-selected-area']
                         )} 
-                        onClick={this.showOptionWrapper}
+                        // onClick={this.showOptionWrapper.bind(null, 'xixi')}
+                        onFocus={this.showOptionWrapper}
+                        onBlur={this.hideOptionWrapper}
+                        tabIndex={-1}
                         >
                         {
                             placeholder
@@ -286,13 +303,16 @@ class Select extends React.Component<SelectProps, {}> {
                                 :   null
                         }
                     </div>
-                    <ul className={selectCss["k-select-option-wrapper"]} style={
-                        me.state.optionWrapperShow  
-                            ? {}
-                            : {
-                                display: 'none'
-                            }
-                    }>
+                    <ul 
+                        className={selectCss["k-select-option-wrapper"]} 
+                        style={
+                            me.state.optionWrapperShow  
+                                ? {}
+                                : {
+                                    display: 'none'
+                                }
+                        }
+                    >
                         {
                             React.Children.map(children, (child:React.ReactElement<any>) => {
                                 let isSelected:boolean = false
@@ -313,6 +333,7 @@ class Select extends React.Component<SelectProps, {}> {
                                 return React.cloneElement(child, {
                                     isSelected,
                                     optionClick: me.optionClick,
+                                    optionMouseDown: me.optionMouseDown,
                                     optionClassName
                                 })
                             })

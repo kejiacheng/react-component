@@ -21,8 +21,8 @@ var Option = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Option.prototype.render = function () {
-        var _a = this.props, value = _a.value, disabled = _a.disabled, title = _a.title, children = _a.children, isSelected = _a.isSelected, optionClick = _a.optionClick, optionClassName = _a.optionClassName;
-        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionClassName, (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
+        var _a = this.props, value = _a.value, disabled = _a.disabled, title = _a.title, children = _a.children, isSelected = _a.isSelected, optionClick = _a.optionClick, optionMouseDown = _a.optionMouseDown, optionClassName = _a.optionClassName;
+        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionClassName, (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onMouseDown: optionMouseDown, onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
         var _b, _c;
     };
     return Option;

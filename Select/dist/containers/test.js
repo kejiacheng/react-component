@@ -157,6 +157,80 @@ var componentName = function (_Component) {
                     )
                 ),
                 _react2.default.createElement(
+                    _Select2.default,
+                    {
+                        style: { width: 200 },
+                        placeholder: 321
+                        // mode="combobox" 
+                        // defaultValue="1"
+                        , onChange: function onChange(value, text) {
+                            console.log(value);
+                            console.log(text);
+                        },
+                        clear: true,
+                        selectClassName: 'select',
+                        optionClassName: 'option',
+                        trigger: function trigger() {
+                            console.log(123);
+                        },
+                        inputChange: function inputChange(text) {
+                            console.log(text);
+                        },
+                        ref: function ref(ele) {
+                            return _this2.select1 = ele;
+                        },
+                        value: this.state.value
+                        // defaultValue={"1"}
+                    },
+                    _react2.default.createElement(
+                        Option,
+                        { value: '1', disabled: true },
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 50, lineHeight: '50px' } },
+                            'dasdas'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '2', title: "312312" },
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 30 } },
+                            'tetetet'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '3' },
+                        _react2.default.createElement(
+                            'div',
+                            { style: { height: 50, lineHeight: '50px' } },
+                            'dasdas'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '4' },
+                        '1236'
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '5' },
+                        '1237'
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '6' },
+                        '1238'
+                    ),
+                    _react2.default.createElement(
+                        Option,
+                        { value: '7' },
+                        '1239'
+                    )
+                ),
+                _react2.default.createElement(
                     'h1',
                     { onClick: this.test },
                     '\u6C99\u53D1\u7684\u53D1\u751F\u554A\u5B9E\u6253\u5B9E'

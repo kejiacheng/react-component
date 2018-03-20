@@ -45,8 +45,9 @@ var Option = /** @class */function (_super) {
             children = _a.children,
             isSelected = _a.isSelected,
             optionClick = _a.optionClick,
+            optionMouseDown = _a.optionMouseDown,
             optionClassName = _a.optionClassName;
-        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionClassName, (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
+        return React.createElement("li", { className: classNames(optionCss['k-option'], (_b = {}, _b[optionCss['k-option-selected']] = isSelected, _b), optionClassName, (_c = {}, _c[optionCss['k-option-disabled']] = disabled, _c)), onMouseDown: optionMouseDown, onClick: optionClick.bind(null, value, children, disabled), title: title, key: value }, children);
         var _b, _c;
     };
     return Option;
