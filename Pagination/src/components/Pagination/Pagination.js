@@ -29,15 +29,17 @@ export default class pagination extends Component {
   constructor (props) {
     super()
 
+    let pageSize = props.pageSize || 10
+
     this.state = {
       current: props.current || 1,
-      pageSize: props.pageSize || 10,
+      pageSize: pageSize,
       showQuickJumper: props.showQuickJumper,
       showInfo: props.showInfo,
       total: props.total || 0,
       offset: props.offset || 4,
       onChange: props.onChange || function () {},
-      totalPage: Math.ceil(props.total / props.pageSize) || 0
+      totalPage: Math.ceil(props.total / pageSize) || 0
     }
   }
 
@@ -200,16 +202,18 @@ export default class pagination extends Component {
   componentWillReceiveProps (props) {
     const me = this
 
+    let pageSize = props.pageSize || 10
+
     me.setState(
       {
         current: props.current || 1,
-        pageSize: props.pageSize || 10,
+        pageSize: pageSize,
         showQuickJumper: props.showQuickJumper,
         showInfo: props.showInfo,
         total: props.total || 0,
         offset: props.offset || 4,
         onChange: props.onChange || function () {},
-        totalPage: Math.ceil(props.total / props.pageSize) || 0
+        totalPage: Math.ceil(props.total / pageSize) || 0
       }
     )
   }

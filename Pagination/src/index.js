@@ -6,4 +6,4 @@ import Log from './service/log'
 
 Log.blue('test')
 
-ReactDOM.render((<Pagination current={1} pageSize={10} total={50} onChange={function(){console.log(1)}}/>), document.getElementById('app'))
+ReactDOM.render((<Pagination current={1}  total={50} onChange={function(page){console.log(page)}}/>), document.getElementById('app'))

@@ -142,7 +142,7 @@ const webpackConfig = {
   ],
 
   devServer: {
-    host: '10.1.40.14',
+    host: '10.1.60.17',
     disableHostCheck: true,
     hot: true,
     inline: true,

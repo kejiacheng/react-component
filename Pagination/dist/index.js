@@ -20,6 +20,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _log2.default.blue('test');
 
-_reactDom2.default.render(_react2.default.createElement(_Pagination2.default, { current: 1, pageSize: 10, total: 50, onChange: function onChange() {
-    console.log(1);
+_reactDom2.default.render(_react2.default.createElement(_Pagination2.default, { current: 1, total: 50, onChange: function onChange(page) {
+    console.log(page);
   } }), document.getElementById('app'));

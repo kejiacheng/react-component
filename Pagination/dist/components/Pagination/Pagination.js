@@ -231,15 +231,17 @@ var pagination = function (_Component) {
       }
     };
 
+    var pageSize = props.pageSize || 10;
+
     _this.state = {
       current: props.current || 1,
-      pageSize: props.pageSize || 10,
+      pageSize: pageSize,
       showQuickJumper: props.showQuickJumper,
       showInfo: props.showInfo,
       total: props.total || 0,
       offset: props.offset || 4,
       onChange: props.onChange || function () {},
-      totalPage: Math.ceil(props.total / props.pageSize) || 0
+      totalPage: Math.ceil(props.total / pageSize) || 0
     };
     return _this;
   }
@@ -252,15 +254,17 @@ var pagination = function (_Component) {
     value: function componentWillReceiveProps(props) {
       var me = this;
 
+      var pageSize = props.pageSize || 10;
+
       me.setState({
         current: props.current || 1,
-        pageSize: props.pageSize || 10,
+        pageSize: pageSize,
         showQuickJumper: props.showQuickJumper,
         showInfo: props.showInfo,
         total: props.total || 0,
         offset: props.offset || 4,
         onChange: props.onChange || function () {},
-        totalPage: Math.ceil(props.total / props.pageSize) || 0
+        totalPage: Math.ceil(props.total / pageSize) || 0
       });
     }
   }, {
