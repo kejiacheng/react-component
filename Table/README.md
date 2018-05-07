@@ -148,15 +148,15 @@ export default class common extends Component {
 
 ### 常规图
 
-![Alt text](/table.gif)
+![Alt text](./table.gif)
 
 ### 排序图
 
-![Alt text](/table1.gif)
+![Alt text](./table1.gif)
 
 ### 筛选图
 
-![Alt text](/table2.gif)
+![Alt text](./table2.gif)
 
 
 #### API
