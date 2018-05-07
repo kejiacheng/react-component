@@ -113,9 +113,32 @@ export default class filter extends Component {
             key: 'age',
             width: '150px',
             filterDropdown: (
-                <div style={{background: '#fff', width: '200px', height: '200px'}}>
-                <input type="text" onChange={this.inputChange}/>
-                <span onClick={this.search}>筛选</span>
+                <div style={
+                    {
+                        background: '#fff', 
+                        width: '210px', 
+                        height: '70px', 
+                        border: '1px solid #dedede',
+                        paddingTop: '20px',
+                        boxSizing: 'border-box'
+                    }
+                }
+                >
+                <input 
+                    type="text" 
+                    onChange={this.inputChange}
+                    style={
+                        {
+                            border: '1px solid #dedede',
+                            height: '24px',
+                            borderRadius: '4px',
+                            width: '140px',
+                            margin: '0 10px',
+                            paddingLeft: '8px'
+                        }
+                    }
+                />
+                <span onClick={this.search} style={{cursor: 'pointer'}}>筛选</span>
                 </div>
             ),
             filterIcon: <img  src={img}/>,
@@ -156,14 +179,14 @@ export default class filter extends Component {
         ]
 
         return (
-            <div>
+            <div style={{width: '800px', margin: '100px auto'}}>
             <Table 
                 className="just-test"
                 bordered
                 columns={columns}
                 dataSource={this.state.dataSource}
-                header={<div>213</div>}
-                footer={<div style={{'textAlign': 'center'}}>456</div>}
+                // header={<div>213</div>}
+                // footer={<div style={{'textAlign': 'center'}}>456</div>}
                 // thead={false}
                 loading={true}
                 onRowMouseEnter={function (data, index) {console.log(data, index)}}

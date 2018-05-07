@@ -131,8 +131,8 @@ export default class drag extends Component {
                     bordered
                     columns={columns}
                     dataSource={this.state.dataSource}
-                    header={<div>213</div>}
-                    footer={<div style={{'textAlign': 'center'}}>456</div>}
+                    // header={<div>213</div>}
+                    // footer={<div style={{'textAlign': 'center'}}>456</div>}
                     loading={true}
                     canDrag={{'switch': this.state.switch, 'callback': this.cb}}
                     // scroll={{x: '1500px'}}

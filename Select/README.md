@@ -2,6 +2,112 @@
 
 #### 使用
 
+```js
+import React, { Component } from 'react';
+import Select from "../components/Select";
+let testCss = require('./test.scss')
+let Option = Select.Option
+class componentName extends Component {
+    constructor () {
+        super()
+
+        this.state = {
+            value: '1'
+        }
+    }
+
+    componentDidMount () {
+        console.log(this.select1)
+    }
+
+    
+    test = () => {
+        console.log(this.select1)
+        console.log(this.select1.clearData)
+        this.select1.clearData()
+    }
+
+    render() {
+        let options = [
+            {
+                value: 1,
+                disalbled: true,
+                children:    <div style={{height: 50, lineHeight: '50px'}}>
+                                dasdas
+                            </div>
+            },
+            {
+                value: 2,
+                children:    <div style={{height: 50, lineHeight: '50px'}}>
+                                dasdas
+                            </div>
+            },
+            {
+                value: 3,
+                children:    123
+            }
+        ]
+        return (
+            <div>
+                <Select 
+                    style={{width: 200}} 
+                    placeholder={321} 
+                    onChange={
+                        function (value, text) {
+                            console.log(value, text) 
+                        }
+                    }
+                    clear={true}
+                    trigger={function () {console.log(123)}}
+                    inputChange={function (text){console.log(text)}}
+                    ref={ele => this.select1 = ele}
+                    value={this.state.value}
+                >
+                    {
+                        options.map((it) => {
+                            return <Option value={it.value} disabled={it.disalbled} key={it.value}>
+                                {it.children}
+                            </Option>
+                        })
+                    }
+                </Select> 
+                <Select 
+                    style={{width: 200}} 
+                    mode="combobox" 
+                    onChange={
+                        function (value, text) {
+                            console.log(value) 
+                            console.log(text)
+                        }
+                    }
+                    clear={true}
+                    trigger={function () {console.log(123)}}
+                    inputChange={function (text){console.log(text)}}
+                    value={this.state.value}
+                >
+                    <Option value="5">1237</Option>
+                    <Option value="6">1238</Option>
+                    <Option value="7">1239</Option>
+                </Select>
+            </div>
+        );
+    }
+}
+
+export default componentName;
+```
+
+#### 效果图
+
+### 普通版本
+
+![Alt text](/select.gif)
+
+### 带搜索版本
+
+![Alt text](/select1.gif)
+
+
 #### API
 
 <table>

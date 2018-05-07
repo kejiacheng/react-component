@@ -101,12 +101,12 @@ export default class common extends Component {
             render (data, record, index) {
                 return data
             },
-            thStyle: {
-                borderColor: 'red'
-            },
-            tdStyle: {
-                borderColor: 'green'
-            }
+            // thStyle: {
+            //     borderColor: 'red'
+            // },
+            // tdStyle: {
+            //     borderColor: 'green'
+            // }
             },
             {
             title: 'money',

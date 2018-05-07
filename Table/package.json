@@ -1,6 +1,6 @@
 {
   "name": "@xm/Table",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "",
   "main": "dist/components/Table/Table.js",
   "scripts": {

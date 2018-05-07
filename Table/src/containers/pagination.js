@@ -110,14 +110,14 @@ export default class pagination extends Component {
         this.state = {
             dataSource,
             page: 1,
-            pageSize: 10
+            pageSize: 5
         }
     }
 
     change = (page) => {
         const me = this
 
-        let data = dataSource.slice((page - 1) * me.state.pageSize, (page - 1) * me.state.pageSize + 10)
+        let data = dataSource.slice((page - 1) * me.state.pageSize, (page - 1) * me.state.pageSize + me.state.pageSize)
         console.log(data)
       
             me.setState(
@@ -132,7 +132,7 @@ export default class pagination extends Component {
     textareaChange = (e) => {
         const me = this
         console.log(e.currentTarget.value)
-        let data = dataSource.slice((this.state.page - 1) * me.state.pageSize, (this.state.page - 1) * me.state.pageSize + 10)
+        let data = dataSource.slice((this.state.page - 1) * me.state.pageSize, (this.state.page - 1) * me.state.pageSize + me.state.pageSize)
         dataSource[0].age = 11
         this.setState(
             {
@@ -149,9 +149,9 @@ export default class pagination extends Component {
             dataIndex: 'name',
             key: 'name',
             width: '200px',
-            render (data, record, index) {
-                return <textarea onChange={me.textareaChange}></textarea>
-            }
+            // render (data, record, index) {
+            //     return <textarea onChange={me.textareaChange}></textarea>
+            // }
             },
             {
             title: 'age',
@@ -194,8 +194,8 @@ export default class pagination extends Component {
                 bordered
                 columns={columns}
                 dataSource={this.state.dataSource}
-                header={<div>213</div>}
-                footer={<div style={{'textAlign': 'center'}}>456</div>}
+                // header={<div>213</div>}
+                // footer={<div style={{'textAlign': 'center'}}>456</div>}
                 loading={true}
                 pagination={
                     {
