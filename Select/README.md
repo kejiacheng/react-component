@@ -101,11 +101,11 @@ export default componentName;
 
 ### 普通版本
 
-![Alt text](/select.gif)
+![Alt text](./select.gif)
 
 ### 带搜索版本
 
-![Alt text](/select1.gif)
+![Alt text](./select1.gif)
 
 
 #### API
